@@ -1,0 +1,10 @@
+# This repository is published to GitHub Pages as a DEMO of a rebuild that the
+# client has not yet signed off. The copy, the photographs and the Impressum
+# belong to physio & fit · Vitalzentrum Eschweiler, and a public copy of their
+# site must not be indexed: it would compete with vitalzentrum-eschweiler.de
+# for their own name and could be mistaken for the real thing.
+#
+# DO NOT ship this file to the production host — there the site should be
+# indexed. Deploy index.html and assets/ only.
+User-agent: *
+Disallow: /
