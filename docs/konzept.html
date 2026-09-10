@@ -1,0 +1,1281 @@
+<title>Vitalzentrum Website-Konzept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,300..600&display=swap">
+<style>
+:root{
+  --ground:#EEF1EA; --ground-2:#E6EBDF; --raise:#F7F9F4;
+  --ink:#122019; --ink-2:#33473C; --moss:#4F6B57;
+  --line:#CFD9C6; --line-soft:#DCE3D5;
+  --puls:#6E960A; --puls-bright:#8FBF12; --puls-wash:#E8F0D2;
+  --klinik:#1E3D55; --klinik-wash:#DCE6EE;
+  --night:#122019; --on-dark:#E9EFE4;
+  --warn:#8A5A0C; --warn-wash:#F1E6CE;
+  --risk:#973122; --risk-wash:#F3DED9;
+  --sans:'Archivo','Helvetica Neue',Arial,sans-serif;
+  --serif:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --pad:clamp(18px,4vw,40px);
+  --measure:68ch;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0B1310; --ground-2:#101A15; --raise:#152118;
+    --ink:#E4EBDF; --ink-2:#B4C4B6; --moss:#8FA894;
+    --line:#26362C; --line-soft:#1E2C24;
+    --puls:#A9DC22; --puls-bright:#BEE93F; --puls-wash:#1D2A11;
+    --klinik:#7FA8C6; --klinik-wash:#152430;
+    --warn:#E0A44A; --warn-wash:#2A2113;
+    --risk:#E89080; --risk-wash:#2E1A16;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0B1310; --ground-2:#101A15; --raise:#152118;
+  --ink:#E4EBDF; --ink-2:#B4C4B6; --moss:#8FA894;
+  --line:#26362C; --line-soft:#1E2C24;
+  --puls:#A9DC22; --puls-bright:#BEE93F; --puls-wash:#1D2A11;
+  --klinik:#7FA8C6; --klinik-wash:#152430;
+  --warn:#E0A44A; --warn-wash:#2A2113;
+  --risk:#E89080; --risk-wash:#2E1A16;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:var(--serif); font-size:17px; line-height:1.72;
+  -webkit-font-smoothing:antialiased;
+}
+:focus-visible{outline:2px solid var(--puls); outline-offset:3px; border-radius:2px}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important; transition-duration:.001ms!important}}
+
+/* ---------- language switching ---------- */
+:root[data-lang="en"] .de{display:none}
+:root:not([data-lang="en"]) .en{display:none}
+span.de,span.en{display:inline}
+:root[data-lang="en"] span.de{display:none}
+
+/* ---------- shell ---------- */
+.shell{max-width:1240px; margin-inline:auto; padding-inline:var(--pad)}
+.topbar{
+  position:sticky; top:0; z-index:60;
+  background:color-mix(in oklab, var(--ground) 88%, transparent);
+  backdrop-filter:blur(9px); border-bottom:1px solid transparent;
+  transition:border-color .3s var(--ease);
+}
+.topbar.is-stuck{border-bottom-color:var(--line-soft)}
+.topbar__in{display:flex; align-items:center; justify-content:space-between; gap:16px; padding-block:13px}
+.mark{display:flex; align-items:center; gap:11px; text-decoration:none; color:var(--ink)}
+.mark svg{width:44px; height:29px; display:block; flex:none}
+.mark b{font-family:var(--sans); font-size:15.5px; font-weight:700; letter-spacing:-.015em; font-variation-settings:"wdth" 108}
+.mark b em{font-style:normal; color:var(--puls)}
+.mark small{display:block; font-family:var(--mono); font-size:9px; letter-spacing:.19em; text-transform:uppercase; color:var(--moss); margin-top:2px}
+.tools{display:flex; align-items:center; gap:8px}
+.lang{display:flex; border:1px solid var(--line); border-radius:3px; overflow:hidden}
+.lang button{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
+  padding:7px 12px; border:0; background:transparent; color:var(--moss); cursor:pointer;
+  transition:background .2s var(--ease), color .2s var(--ease);
+}
+.lang button[aria-pressed="true"]{background:var(--ink); color:var(--ground)}
+.lang button:hover:not([aria-pressed="true"]){color:var(--ink)}
+.tbtn{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
+  padding:7px 12px; border:1px solid var(--line); border-radius:3px;
+  background:transparent; color:var(--moss); cursor:pointer;
+}
+.tbtn:hover{color:var(--ink); border-color:var(--moss)}
+
+/* ---------- type ---------- */
+.eyebrow{
+  font-family:var(--mono); font-size:11px; letter-spacing:.19em; text-transform:uppercase;
+  color:var(--moss); margin:0 0 14px;
+}
+h1,h2,h3,h4{font-family:var(--sans); text-wrap:balance; margin:0}
+h1{
+  font-size:clamp(38px,6.4vw,70px); line-height:1.02; letter-spacing:-.028em;
+  font-weight:700; font-variation-settings:"wdth" 118;
+}
+h2{
+  font-size:clamp(25px,3.3vw,37px); line-height:1.1; letter-spacing:-.022em;
+  font-weight:600; font-variation-settings:"wdth" 112;
+}
+h3{font-size:clamp(18px,1.9vw,21px); line-height:1.26; letter-spacing:-.012em; font-weight:600}
+h4{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; font-weight:500; color:var(--moss)}
+p{margin:0 0 1.05em; max-width:var(--measure)}
+.lede{font-size:clamp(18px,2.1vw,22px); line-height:1.58; color:var(--ink-2); font-weight:300; max-width:58ch}
+.num,.mono{font-family:var(--mono); font-variant-numeric:tabular-nums}
+strong{font-weight:600}
+a{color:var(--ink); text-decoration-color:var(--moss); text-underline-offset:3px}
+a:hover{color:var(--puls)}
+ul,ol{max-width:var(--measure); padding-left:1.15em; margin:0 0 1.05em}
+li{margin-bottom:.34em}
+hr{border:0; height:1px; background:var(--line-soft); margin:0}
+
+/* ---------- hero ---------- */
+.hero{padding-block:clamp(48px,8vw,96px) clamp(34px,5vw,54px); border-bottom:1px solid var(--line-soft)}
+.hero h1{margin-bottom:22px}
+.hero .lede{margin-bottom:30px}
+.stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(132px,1fr)); gap:1px; background:var(--line-soft); border:1px solid var(--line-soft); border-radius:4px; overflow:hidden; margin-top:8px}
+.stat{background:var(--ground); padding:16px 18px}
+.stat b{display:block; font-family:var(--mono); font-size:clamp(23px,3vw,30px); font-weight:500; letter-spacing:-.02em; line-height:1.1; font-variant-numeric:tabular-nums}
+.stat span{display:block; font-family:var(--mono); font-size:10px; letter-spacing:.13em; text-transform:uppercase; color:var(--moss); margin-top:7px; line-height:1.5}
+.stat--puls b{color:var(--puls)}
+
+/* ---------- layout with rail ---------- */
+.body{display:grid; gap:clamp(28px,4vw,56px); padding-block:clamp(30px,4vw,52px)}
+@media (min-width:1000px){.body{grid-template-columns:186px minmax(0,1fr)}}
+.rail{display:none}
+@media (min-width:1000px){
+  .rail{display:block; position:sticky; top:78px; align-self:start; max-height:calc(100vh - 100px); overflow-y:auto}
+}
+.rail ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:1px}
+.rail a{
+  display:grid; grid-template-columns:26px 1fr; gap:9px; align-items:baseline;
+  text-decoration:none; padding:6px 8px 6px 0; color:var(--moss);
+  font-family:var(--mono); font-size:11.5px; line-height:1.45; letter-spacing:.02em;
+  border-left:2px solid transparent; padding-left:10px;
+  transition:color .2s var(--ease), border-color .2s var(--ease);
+}
+.rail a i{font-style:normal; opacity:.62}
+.rail a:hover{color:var(--ink)}
+.rail a.is-here{color:var(--ink); border-left-color:var(--puls)}
+
+/* ---------- sections ---------- */
+section[id]{scroll-margin-top:76px; padding-block:clamp(30px,4vw,46px) 0}
+section[id]+section[id]{border-top:1px solid var(--line-soft); margin-top:clamp(34px,5vw,58px)}
+.shead{display:flex; align-items:baseline; gap:14px; margin-bottom:20px; flex-wrap:wrap}
+.shead .sn{
+  font-family:var(--mono); font-size:11px; letter-spacing:.16em; color:var(--puls);
+  padding-top:.5em; flex:none;
+}
+.sub{margin:clamp(30px,4vw,44px) 0 16px}
+.sub h3{margin-bottom:8px}
+
+/* ---------- generic blocks ---------- */
+.grid{display:grid; gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(270px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
+.panel{background:var(--raise); border:1px solid var(--line-soft); border-radius:4px; padding:18px 20px}
+.panel h3{margin-bottom:9px}
+.panel p:last-child,.panel ul:last-child{margin-bottom:0}
+.note{
+  border-left:2px solid var(--moss); padding:2px 0 2px 16px; margin:0 0 1.05em;
+  font-size:15.5px; color:var(--ink-2); max-width:var(--measure);
+}
+.note--puls{border-left-color:var(--puls)}
+.note--warn{border-left-color:var(--warn)}
+.note--risk{border-left-color:var(--risk)}
+.tag{
+  display:inline-block; font-family:var(--mono); font-size:10px; letter-spacing:.11em;
+  text-transform:uppercase; padding:3px 8px; border-radius:2px; white-space:nowrap;
+  background:var(--ground-2); color:var(--moss);
+}
+.tag--ok{background:var(--puls-wash); color:var(--puls)}
+.tag--warn{background:var(--warn-wash); color:var(--warn)}
+.tag--risk{background:var(--risk-wash); color:var(--risk)}
+.tag--klinik{background:var(--klinik-wash); color:var(--klinik)}
+.tags{display:flex; flex-wrap:wrap; gap:5px}
+
+/* ---------- tables ---------- */
+.tw{overflow-x:auto; border:1px solid var(--line-soft); border-radius:4px; margin-bottom:1.05em}
+table{border-collapse:collapse; width:100%; min-width:560px; font-size:14.5px}
+th,td{text-align:left; padding:11px 14px; border-bottom:1px solid var(--line-soft); vertical-align:top}
+thead th{
+  font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--moss); font-weight:500; background:var(--ground-2); white-space:nowrap;
+}
+tbody tr:last-child td{border-bottom:0}
+td.n,th.n{font-family:var(--mono); font-variant-numeric:tabular-nums; white-space:nowrap}
+td b{font-family:var(--sans); font-weight:600; font-size:14px}
+.tw--tight table{min-width:440px}
+
+/* ---------- widget frame ---------- */
+.widget{border:1px solid var(--line); border-radius:5px; overflow:hidden; margin:20px 0 26px; background:var(--raise)}
+.widget__bar{
+  display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding:10px 16px; background:var(--ground-2); border-bottom:1px solid var(--line-soft);
+}
+.widget__bar h4{color:var(--ink)}
+.widget__body{padding:clamp(16px,2.5vw,26px)}
+.mockflag{font-family:var(--mono); font-size:9.5px; letter-spacing:.11em; text-transform:uppercase; color:var(--warn)}
+.ctl{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:18px}
+.chip{
+  font-family:var(--mono); font-size:11px; letter-spacing:.08em; padding:6px 12px;
+  border:1px solid var(--line); border-radius:2px; background:transparent; color:var(--moss);
+  cursor:pointer; transition:all .2s var(--ease);
+}
+.chip:hover{color:var(--ink); border-color:var(--moss)}
+.chip[aria-pressed="true"],.chip.is-on{background:var(--ink); border-color:var(--ink); color:var(--ground)}
+.readout{display:grid; grid-template-columns:repeat(auto-fit,minmax(112px,1fr)); gap:14px 20px}
+.readout div span{display:block; font-family:var(--mono); font-size:9.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--moss); margin-bottom:3px}
+.readout div b{font-family:var(--mono); font-size:20px; font-weight:500; font-variant-numeric:tabular-nums; letter-spacing:-.01em}
+</style>
+<style>
+/* ---------- W1 dosage ring ---------- */
+.dose{display:grid; gap:26px; align-items:center}
+@media (min-width:640px){.dose{grid-template-columns:230px minmax(0,1fr)}}
+.dose svg{width:100%; max-width:230px; height:auto; display:block; margin-inline:auto}
+.dose__seg{cursor:pointer; transition:opacity .2s var(--ease)}
+.dose__seg:hover{opacity:.75}
+.dose__arc{fill:none; stroke-width:13; stroke-linecap:butt}
+.dose__hit{fill:none; stroke:transparent; stroke-width:26}
+.dose__hub{font-family:var(--mono); font-size:11px; fill:var(--moss); text-anchor:middle}
+.dose__big{font-family:var(--mono); font-size:25px; font-weight:500; fill:var(--ink); text-anchor:middle}
+.dose__mark{transform-origin:120px 120px; animation:spin 11s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.dose__station{background:var(--ground-2); border-radius:3px; padding:13px 15px; margin-bottom:16px; min-height:82px}
+.dose__station b{display:block; font-family:var(--sans); font-weight:600; font-size:15px; margin-bottom:3px}
+.dose__station p{font-size:14.5px; margin:0; color:var(--ink-2)}
+
+/* ---------- W2 floor plan ---------- */
+.plan{display:grid; gap:22px}
+@media (min-width:820px){.plan{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr)}}
+.plan svg{width:100%; height:auto; display:block; border-radius:3px}
+.zone{cursor:pointer}
+.zone rect,.zone polygon{transition:fill .22s var(--ease), stroke .22s var(--ease)}
+.zone:hover rect,.zone:hover polygon{stroke:var(--puls); stroke-width:2}
+.zone.is-on rect,.zone.is-on polygon{fill:var(--puls-wash); stroke:var(--puls); stroke-width:2}
+.zone text{font-family:var(--mono); font-size:9px; letter-spacing:.05em; fill:var(--moss); pointer-events:none}
+.zone.is-on text{fill:var(--puls)}
+.plan__info{background:var(--ground-2); border-radius:3px; padding:17px 19px; align-self:start}
+.plan__info h3{margin-bottom:4px}
+.plan__info .tag{margin-bottom:11px}
+.plan__info ul{font-size:14.5px; margin-bottom:0; color:var(--ink-2)}
+
+/* ---------- W3 rehasport ---------- */
+.reha__dots{display:flex; flex-wrap:wrap; gap:3px; margin:16px 0 18px}
+.reha__dot{width:13px; height:13px; border-radius:1px; background:var(--line); transition:background .18s var(--ease)}
+.reha__dot.is-used{background:var(--puls)}
+.reha__dot.is-over{background:var(--risk)}
+input[type=range]{width:100%; max-width:300px; accent-color:var(--puls)}
+.field{display:flex; flex-direction:column; gap:5px; font-family:var(--mono); font-size:10px; letter-spacing:.13em; text-transform:uppercase; color:var(--moss)}
+.field input[type=date]{
+  font-family:var(--mono); font-size:13px; padding:7px 9px; border:1px solid var(--line);
+  border-radius:2px; background:var(--ground); color:var(--ink); color-scheme:light dark;
+}
+
+/* ---------- W4 course grid ---------- */
+.kw{overflow-x:auto}
+.kgrid{display:grid; grid-template-columns:repeat(7,minmax(104px,1fr)); gap:1px; background:var(--line-soft); border:1px solid var(--line-soft); border-radius:3px; min-width:730px}
+.kcol{background:var(--ground); padding:9px 8px; display:flex; flex-direction:column; gap:6px}
+.kcol>h4{margin-bottom:3px}
+.kcol.is-today{background:var(--puls-wash)}
+.kslot{
+  border-left:2px solid var(--puls); padding:5px 0 5px 8px; font-size:13px; line-height:1.35;
+  overflow-wrap:anywhere; hyphens:auto;
+  transition:opacity .2s var(--ease);
+}
+.kslot time{display:block; font-family:var(--mono); font-size:11px; color:var(--moss); font-variant-numeric:tabular-nums}
+.kslot.is-gap{border-left-color:var(--warn)}
+.kslot.is-gap::after{content:"?"; font-family:var(--mono); color:var(--warn); font-size:11px; margin-left:5px}
+.kslot.is-dim{opacity:.22}
+.kempty{font-family:var(--mono); font-size:11px; color:var(--moss); padding:5px 0}
+
+/* ---------- W5 membership ---------- */
+.mgrid{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.mcard{border:1px solid var(--line-soft); border-radius:3px; padding:15px 17px; background:var(--ground)}
+.mcard.is-best{border-color:var(--puls); box-shadow:inset 0 0 0 1px var(--puls)}
+.mcard h4{color:var(--ink); margin-bottom:11px}
+.mrow{display:flex; justify-content:space-between; gap:10px; font-size:14px; padding:5px 0; border-bottom:1px dotted var(--line-soft)}
+.mrow:last-of-type{border-bottom:0}
+.mrow span{color:var(--moss)}
+.mrow b{font-family:var(--mono); font-variant-numeric:tabular-nums; font-weight:500}
+.mtot{margin-top:9px; padding-top:9px; border-top:1px solid var(--line)}
+.mtot b{font-size:19px; color:var(--puls)}
+
+/* ---------- W6 pathway ---------- */
+.path{display:flex; gap:0; overflow-x:auto; padding-bottom:6px; margin-bottom:18px}
+.pstep{
+  flex:1 0 130px; text-align:left; background:transparent; border:0; cursor:pointer;
+  padding:0 12px 0 0; position:relative;
+}
+.pstep__bar{height:4px; border-radius:2px; background:var(--line); margin-bottom:10px; transition:background .22s var(--ease)}
+.pstep.is-on .pstep__bar,.pstep:hover .pstep__bar{background:var(--puls)}
+.pstep__n{font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; color:var(--moss); display:block; margin-bottom:3px}
+.pstep__t{font-family:var(--sans); font-size:14px; font-weight:600; color:var(--ink); line-height:1.25; display:block}
+.pstep.is-on .pstep__t{color:var(--puls)}
+.pinfo{background:var(--ground-2); border-radius:3px; padding:17px 19px}
+.pinfo h3{margin-bottom:8px}
+.pinfo p{font-size:15px; margin-bottom:12px}
+.pinfo dl{display:grid; grid-template-columns:auto 1fr; gap:5px 14px; margin:0; font-size:13.5px}
+.pinfo dt{font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--moss); padding-top:3px}
+.pinfo dd{margin:0}
+
+/* ---------- swatches ---------- */
+.sw{display:grid; grid-template-columns:repeat(auto-fit,minmax(158px,1fr)); gap:1px; background:var(--line-soft); border:1px solid var(--line-soft); border-radius:4px; overflow:hidden}
+.swi{background:var(--ground); padding:0}
+.swi i{display:block; height:64px}
+.swi div{padding:11px 13px}
+.swi b{display:block; font-family:var(--sans); font-size:13.5px; font-weight:600}
+.swi code{display:block; font-family:var(--mono); font-size:11px; color:var(--moss); margin:3px 0 6px; font-variant-numeric:tabular-nums}
+.swi p{font-size:12.5px; line-height:1.5; color:var(--ink-2); margin:0}
+.spec{display:flex; flex-direction:column; gap:14px}
+.spec__row{display:grid; gap:4px; padding-bottom:14px; border-bottom:1px solid var(--line-soft)}
+.spec__row:last-child{border-bottom:0; padding-bottom:0}
+.spec__row>b{font-size:26px; line-height:1.15; font-weight:600}
+.spec__row>span{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--moss)}
+.spec__row>p{font-size:14.5px; margin:4px 0 0; color:var(--ink-2)}
+.f-sans{font-family:var(--sans); font-variation-settings:"wdth" 118}
+.f-serif{font-family:var(--serif)}
+.f-mono{font-family:var(--mono); font-variant-numeric:tabular-nums}
+
+/* ---------- IA diagram ---------- */
+.ia{display:grid; gap:18px}
+@media (min-width:780px){.ia{grid-template-columns:1fr auto 1fr; align-items:start}}
+.ia__col h4{margin-bottom:11px}
+.ia__list{display:flex; flex-direction:column; gap:3px}
+.ia__item{
+  display:flex; align-items:center; gap:9px; font-size:13.5px; padding:7px 11px;
+  border:1px solid var(--line-soft); border-radius:2px; background:var(--ground);
+  transition:border-color .2s var(--ease), background .2s var(--ease);
+}
+.ia__item em{font-family:var(--mono); font-style:normal; font-size:10px; color:var(--moss); margin-left:auto; white-space:nowrap}
+.ia__item.is-lit{border-color:var(--puls); background:var(--puls-wash)}
+.ia__item.is-drop{opacity:.5}
+.ia__arrow{display:flex; align-items:center; justify-content:center; font-family:var(--mono); color:var(--moss); font-size:20px; padding:10px 0}
+@media (min-width:780px){.ia__arrow{padding-top:44px}}
+.ia__group{border:1px solid var(--line); border-radius:3px; padding:9px 11px; background:var(--ground); cursor:pointer; transition:border-color .2s var(--ease)}
+.ia__group:hover,.ia__group.is-on{border-color:var(--puls)}
+.ia__group b{display:block; font-family:var(--sans); font-size:14px; font-weight:600}
+.ia__group span{font-family:var(--mono); font-size:10px; color:var(--moss); letter-spacing:.06em}
+
+/* ---------- footer ---------- */
+.foot{background:var(--night); color:var(--on-dark); margin-top:clamp(46px,7vw,80px); padding-block:clamp(38px,5vw,58px) 26px; border-top:1px solid rgba(233,239,228,.1)}
+.foot a{color:var(--on-dark)}
+.foot a:hover{color:var(--puls-bright)}
+.foot .grid{gap:26px}
+.foot h4{color:rgba(233,239,228,.62)}
+.foot p,.foot li{color:rgba(233,239,228,.88); font-size:14.5px}
+.foot__bar{margin-top:30px; padding-top:20px; border-top:1px solid rgba(233,239,228,.2); font-family:var(--mono); font-size:11px; letter-spacing:.05em; color:rgba(233,239,228,.62); display:flex; flex-wrap:wrap; gap:10px 24px; justify-content:space-between}
+</style>
+<header class="topbar" id="topbar">
+  <div class="shell topbar__in">
+    <a class="mark" href="#top">
+      <svg viewBox="0 0 52 34" aria-hidden="true">
+        <rect x="0.5" y="10.5" width="4.5" height="13" rx="2" fill="currentColor"/>
+        <rect x="6.5" y="5" width="8.5" height="24" rx="3" fill="currentColor"/>
+        <rect x="37" y="5" width="8.5" height="24" rx="3" fill="currentColor"/>
+        <rect x="47" y="10.5" width="4.5" height="13" rx="2" fill="currentColor"/>
+        <rect x="15" y="14.6" width="22" height="4.8" fill="currentColor"/>
+        <path d="M14.5 17h4.2l2.6-7.6 3.9 15.2 3.4-10.6 1.9 3h7.1" fill="none" stroke="var(--puls)" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span><b>physio &amp; <em>fit</em></b><small>Konzept 2026</small></span>
+    </a>
+    <div class="tools">
+      <div class="lang" role="group" aria-label="Sprache / Language">
+        <button type="button" id="lang-de" aria-pressed="true">Deutsch</button>
+        <button type="button" id="lang-en" aria-pressed="false">English</button>
+      </div>
+      <button type="button" class="tbtn" id="theme">Kontrast</button>
+    </div>
+  </div>
+</header>
+
+<div class="shell" id="top">
+  <div class="hero">
+    <p class="eyebrow"><span class="de">Konzept &amp; Begründung — Vitalzentrum Eschweiler</span><span class="en">Concept &amp; rationale — Vitalzentrum Eschweiler</span></p>
+    <h1><span class="de">Eine Website, die so&nbsp;arbeitet wie Ihr Haus.</span><span class="en">A website that works the way your practice does.</span></h1>
+    <div class="de"><p class="lede">Sie behandeln und trainieren unter einem Dach. Ihre bisherige Website trennt beides in 16 Einzelseiten. Dieses Dokument zeigt Ihnen, was wir neu gebaut haben, warum wir es so gebaut haben — und was rechtlich vor dem Start noch zu entscheiden ist.</p></div>
+    <div class="en"><p class="lede">You treat and you train under one roof. Your current website splits that into 16 separate pages. This document shows what we have rebuilt, why we built it that way — and what remains to be decided legally before launch.</p></div>
+    <div class="stats">
+      <div class="stat stat--puls"><b>16 → 8</b><span class="de">Seiten in der<br>Hauptnavigation</span><span class="en">Pages in the<br>main navigation</span></div>
+      <div class="stat"><b>1,04 → 11,4</b><span class="de">Kontrast im Fußbereich<br>(behobener Fehler)</span><span class="en">Footer contrast ratio<br>(bug we fixed)</span></div>
+      <div class="stat"><b>6</b><span class="de">interaktive Bausteine<br>statt Fließtext</span><span class="en">interactive modules<br>instead of prose</span></div>
+      <div class="stat"><b>0</b><span class="de">Texte, die wir<br>umgeschrieben haben</span><span class="en">texts we<br>rewrote</span></div>
+    </div>
+  </div>
+
+  <div class="body">
+    <nav class="rail" aria-label="Inhalt">
+      <ol>
+        <li><a href="#s1"><i>01</i><span class="de">Ausgangslage</span><span class="en">Where we start</span></a></li>
+        <li><a href="#s2"><i>02</i><span class="de">Seiten &amp; Themen</span><span class="en">Pages &amp; subjects</span></a></li>
+        <li><a href="#s3"><i>03</i><span class="de">Neue Architektur</span><span class="en">New architecture</span></a></li>
+        <li><a href="#s4"><i>04</i><span class="de">Farbklima</span><span class="en">Colour</span></a></li>
+        <li><a href="#s5"><i>05</i><span class="de">Schrift</span><span class="en">Typography</span></a></li>
+        <li><a href="#s6"><i>06</i><span class="de">Interaktive Bausteine</span><span class="en">Interactive modules</span></a></li>
+        <li><a href="#s7"><i>07</i><span class="de">Bedienbarkeit</span><span class="en">Usability</span></a></li>
+        <li><a href="#s8"><i>08</i><span class="de">Recht &amp; Datenschutz</span><span class="en">Law &amp; privacy</span></a></li>
+        <li><a href="#s9"><i>09</i><span class="de">Technik &amp; Hosting</span><span class="en">Tech &amp; hosting</span></a></li>
+        <li><a href="#s10"><i>10</i><span class="de">Ihre Entscheidungen</span><span class="en">Your decisions</span></a></li>
+      </ol>
+    </nav>
+
+    <main>
+<!-- ============ 01 ============ -->
+<section id="s1">
+  <div class="shead"><span class="sn">01</span><h2><span class="de">Ausgangslage</span><span class="en">Where we start</span></h2></div>
+  <div class="de">
+    <p>Ihre heutige Seite läuft im GoDaddy Website Builder. Sie enthält alles, was sie enthalten muss — aber sie erzählt nicht, was Ihr Haus besonders macht: dass Physiopraxis und medizinisch betreutes Training <em>dieselbe</em> Adresse, dasselbe Team und denselben Behandlungsweg teilen.</p>
+    <p>Bei der Analyse sind uns fünf Dinge aufgefallen, die wir in dieser Reihenfolge angegangen sind:</p>
+    <ol>
+      <li><strong>Die Öffnungszeiten waren unsichtbar.</strong> Auf der Seite „Öffnungszeiten“ stand kein Text — die Zeiten existierten nur als Pixel in einem JPEG. Weder Google noch ein Screenreader noch die Zwischenablage konnten sie lesen.</li>
+      <li><strong>16 Seiten, aber kein Weg hindurch.</strong> Drei getrennte Seiten erklären drei Gerätebereiche, die im selben Raum stehen. Eine Seite („Anwendungsbereiche“) enthält nur den Satz, dass die Informationen „demnächst“ kommen.</li>
+      <li><strong>Zahlen als Fließtext.</strong> 11 Minuten, 33 Minuten, 66–99 Minuten, 50 Einheiten, 18 Monate, 69,90 €, 54,90 €, 44,90 € — das sind Ihre stärksten Argumente, und sie stehen mitten in Absätzen.</li>
+      <li><strong>Fremde Dienste ohne Einwilligung.</strong> Die alte Seite bindet Google und Facebook ein; das Kontaktformular verweist auf Google reCAPTCHA. Beides sendet Daten Ihrer Besucher in die USA, bevor jemand zugestimmt hat.</li>
+      <li><strong>Ein Kontrastfehler im Fußbereich.</strong> Im dunklen Anzeigemodus stand hellgrüne Schrift auf hellgrünem Grund — Kontrast 1,04 : 1. Praktisch unlesbar. Behoben, Messwerte in Abschnitt 04.</li>
+    </ol>
+    <p class="note note--puls"><strong>Die Leitidee, die daraus folgt:</strong> „Bewegung ist Medizin“ ist kein Slogan, den wir uns ausgedacht haben — er steht auf Ihrer Startseite. Die ganze Gestaltung leitet sich aus Ihrer eigenen Methode ab: aus der Dosierung. 11 Minuten pro Durchgang. 50 Einheiten in 18 Monaten. Zahlen als Verordnung.</p>
+  </div>
+  <div class="en">
+    <p>Your current site runs on the GoDaddy Website Builder. It contains everything it needs to — but it does not tell the one story that makes your practice distinctive: that the physiotherapy practice and medically supervised training share <em>the same</em> address, the same team and the same treatment pathway.</p>
+    <p>Our analysis surfaced five things, which we addressed in this order:</p>
+    <ol>
+      <li><strong>Your opening hours were invisible.</strong> The "Öffnungszeiten" page contained no text — the hours existed only as pixels inside a JPEG. Neither Google, nor a screen reader, nor the clipboard could read them.</li>
+      <li><strong>16 pages, but no path through them.</strong> Three separate pages explain three equipment areas that stand in the same room. One page ("Anwendungsbereiche") contains only a sentence saying the information is coming soon.</li>
+      <li><strong>Numbers buried in prose.</strong> 11 minutes, 33 minutes, 66–99 minutes, 50 sessions, 18 months, €69.90, €54.90, €44.90 — these are your strongest arguments, and they sit mid-paragraph.</li>
+      <li><strong>Third-party services without consent.</strong> The old site embeds Google and Facebook; the contact form references Google reCAPTCHA. Both send visitor data to the US before anyone has agreed to anything.</li>
+      <li><strong>A contrast bug in the footer.</strong> In dark display mode, pale green text sat on a pale green ground — a ratio of 1.04 : 1. Effectively unreadable. Fixed; measurements in section 04.</li>
+    </ol>
+    <p class="note note--puls"><strong>The organising idea that follows:</strong> "Bewegung ist Medizin" — movement is medicine — is not a slogan we invented. It is already on your home page. The entire design derives from your own method: from dosage. 11 minutes per round. 50 sessions in 18 months. Numbers as prescription.</p>
+  </div>
+</section>
+<!-- ============ 02 ============ -->
+<section id="s2">
+  <div class="shead"><span class="sn">02</span><h2><span class="de">Seiten &amp; Themen</span><span class="en">Pages &amp; subjects</span></h2></div>
+  <div class="de"><p>Zuerst haben wir jede bestehende Seite gelesen und erfasst: welches Thema sie behandelt, welche Begriffe darin vorkommen und wie viel Text sie tatsächlich trägt. Der Textumfang steht bewusst dabei — er zeigt, welche Seiten eine eigene Seite verdienen und welche nicht.</p></div>
+  <div class="en"><p>We began by reading every existing page and recording what it covers, which terms appear in it, and how much text it actually carries. The character count is deliberately included — it shows which pages earn their own page and which do not.</p></div>
+  <div class="tw">
+    <table>
+      <thead><tr>
+        <th><span class="de">Seite</span><span class="en">Page</span></th>
+        <th><span class="de">Thema</span><span class="en">Subject</span></th>
+        <th><span class="de">Schlüsselwörter</span><span class="en">Keywords</span></th>
+        <th class="n"><span class="de">Zeichen</span><span class="en">Chars</span></th>
+        <th><span class="de">Befund</span><span class="en">Verdict</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td><b>Start</b></td><td><span class="de">Begrüßung, Leistungsüberblick, Team, Standort</span><span class="en">Welcome, overview of services, team, location</span></td><td>Gesundheit · Bewegung · Fitness · Therapie · ganzheitlich</td><td class="n">5 801</td><td><span class="tag tag--ok"><span class="de">bleibt</span><span class="en">keep</span></span></td></tr>
+        <tr><td><b>Physiopraxis</b></td><td><span class="de">Praxis Ines Berndt, Team, Ausstattung, 12 Jahre vor Ort</span><span class="en">Ines Berndt's practice, team, equipment, 12 years local</span></td><td>Krankengymnastik · Fango · orthopädisch · neurologisch</td><td class="n">944</td><td><span class="tag tag--ok"><span class="de">bleibt</span><span class="en">keep</span></span></td></tr>
+        <tr><td><b>Anwendungsbereiche</b></td><td><span class="de">Behandlungsformen — Inhalt fehlt, nur „demnächst“</span><span class="en">Treatment types — content missing, only "coming soon"</span></td><td>Therapieanfrage</td><td class="n">248</td><td><span class="tag tag--risk"><span class="de">Sackgasse</span><span class="en">dead end</span></span></td></tr>
+        <tr><td><b>Milon-Zirkel</b></td><td><span class="de">Elektronischer Zirkel, 11/33 Minuten, konzentrisch &amp; exzentrisch</span><span class="en">Electronic circuit, 11/33 minutes, concentric &amp; eccentric</span></td><td>Zirkeltraining · Hightech · gelenkschonend · Zeit unter Spannung</td><td class="n">2 363</td><td><span class="tag tag--warn"><span class="de">zusammenlegen</span><span class="en">merge</span></span></td></tr>
+        <tr><td><b>Frei-medical</b></td><td><span class="de">Therapiegeräte, Krankengymnastik am Gerät, Biofeedback</span><span class="en">Therapy equipment, medical device training, biofeedback</span></td><td>evidenzbasiert · Belastungssteuerung · Wiederholbarkeit</td><td class="n">1 736</td><td><span class="tag tag--warn"><span class="de">zusammenlegen</span><span class="en">merge</span></span></td></tr>
+        <tr><td><b>Freies Training</b></td><td><span class="de">Atletica-Bereich, Multipresse, Hantelbänke, Sprossenwand, Seilzug</span><span class="en">Atletica area, multi-press, benches, wall bars, cable machine</span></td><td>Krafttraining · funktionell · geführte Bewegung · Sicherheit</td><td class="n">3 336</td><td><span class="tag tag--warn"><span class="de">zusammenlegen</span><span class="en">merge</span></span></td></tr>
+        <tr><td><b>Reha-Sport</b></td><td><span class="de">Ärztlich verordnetes Gruppentraining mit dem Regiosportbund</span><span class="en">Doctor-prescribed group training with Regiosportbund</span></td><td>Verordnung · 50 Einheiten · 18 Monate · Krankenkasse · kostenfrei</td><td class="n">1 779</td><td><span class="tag tag--warn"><span class="de">zu Kursen</span><span class="en">to courses</span></span></td></tr>
+        <tr><td><b>Kurse vor Ort</b></td><td><span class="de">Fünf beschriebene Kurse plus Wochenplan mit elf Terminen</span><span class="en">Five described courses plus a weekly plan with eleven slots</span></td><td>Rückenschule · Hockergymnastik · Pilates · Tai Chi · Laufgruppe</td><td class="n">7 510</td><td><span class="tag tag--ok"><span class="de">bleibt</span><span class="en">keep</span></span></td></tr>
+        <tr><td><b>Firmenfitness</b></td><td><span class="de">Betriebliches Gesundheitsangebot, Vorteile für beide Seiten</span><span class="en">Corporate health offering, benefits for both sides</span></td><td>Arbeitgeberzuschuss · Sachbezug · § 8 EStG · Prävention</td><td class="n">1 516</td><td><span class="tag tag--ok"><span class="de">bleibt</span><span class="en">keep</span></span></td></tr>
+        <tr><td><b>Mitgliedschaft</b></td><td><span class="de">Drei Laufzeiten, Kassenförderung, Arbeitgebermodell, Personal Training</span><span class="en">Three terms, insurer subsidy, employer model, personal training</span></td><td>69,90 € · 54,90 € · 44,90 € · 149,90 € · 129,90 €</td><td class="n">3 665</td><td><span class="tag tag--ok"><span class="de">bleibt</span><span class="en">keep</span></span></td></tr>
+        <tr><td><b>Öffnungszeiten</b></td><td><span class="de">Trainingszeiten pro Wochentag, zweigeteilt, mit Legende</span><span class="en">Training hours per weekday, split shifts, with legend</span></td><td>Krankengymnastik · Med. Dienstleistungen · Fitness · Kurse</td><td class="n">501</td><td><span class="tag tag--warn"><span class="de">zu Kontakt</span><span class="en">to contact</span></span></td></tr>
+        <tr><td><b>Kontakt</b></td><td><span class="de">Formular, Anschrift, Telefon, Anfahrt</span><span class="en">Form, address, phone, directions</span></td><td>Grünstraße 23 · Eschweiler-Dürwiß · Rückrufnummer</td><td class="n">574</td><td><span class="tag tag--warn"><span class="de">zusammenlegen</span><span class="en">merge</span></span></td></tr>
+        <tr><td><b>Stellen Praxis</b></td><td><span class="de">Stellenanzeige Physiotherapeut:in (m/w/d)</span><span class="en">Job posting, physiotherapist (m/f/d)</span></td><td>Aufgaben · Profil · Wir bieten</td><td class="n">1 629</td><td><span class="tag tag--warn"><span class="de">zusammenlegen</span><span class="en">merge</span></span></td></tr>
+        <tr><td><b>Stellen Fitness</b></td><td><span class="de">Ausbildungsplatz Sport- und Fitnesskaufmann/-frau</span><span class="en">Apprenticeship, sport &amp; fitness management</span></td><td>Azubi · Ausbildung · Aufgaben · Profil</td><td class="n">1 673</td><td><span class="tag tag--warn"><span class="de">zusammenlegen</span><span class="en">merge</span></span></td></tr>
+        <tr><td><b>Impressum</b></td><td><span class="de">Pflichtangaben, Aufsichtsbehörde, Berufsrecht, Haftung</span><span class="en">Mandatory details, supervisory body, professional law, liability</span></td><td>MPhG · Gesundheitsamt StädteRegion Aachen · Berufshaftpflicht</td><td class="n">2 686</td><td><span class="tag tag--klinik"><span class="de">Pflicht</span><span class="en">required</span></span></td></tr>
+        <tr><td><b>Datenschutz</b></td><td><span class="de">Datenschutzerklärung, aktuell für Facebook/Google geschrieben</span><span class="en">Privacy policy, currently written for Facebook/Google</span></td><td>DSGVO · Cookies · Facebook · Instagram · Google Analytics</td><td class="n">43 742</td><td><span class="tag tag--risk"><span class="de">neu fassen</span><span class="en">rewrite</span></span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="de">
+    <p class="note note--warn"><strong>Zwei Funde, die eine Entscheidung von Ihnen brauchen.</strong> Erstens: Sechs Kurse stehen im Wochenplan, haben aber keine Beschreibung — Fit&nbsp;&amp;&nbsp;Fun, Gardetraining, Seniorensport, Yin Yoga, Langhantel-Training und Reha-Sport als Kurs. Umgekehrt ist die Laufgruppe ausführlich beschrieben, taucht im Plan aber nicht auf. Zweitens: Die Datenschutzerklärung ist 43 742 Zeichen lang und beschreibt fast ausschließlich Facebook-, Instagram- und Google-Dienste. Sie passt zur alten Seite, nicht zur neuen.</p>
+  </div>
+  <div class="en">
+    <p class="note note--warn"><strong>Two findings that need a decision from you.</strong> First: six courses appear in the weekly plan but have no description — Fit&nbsp;&amp;&nbsp;Fun, Gardetraining, Seniorensport, Yin Yoga, barbell training and Reha-Sport as a course. Conversely, the running group is described in detail but never appears in the plan. Second: the privacy policy runs to 43,742 characters and describes almost nothing but Facebook, Instagram and Google services. It fits the old site, not the new one.</p>
+  </div>
+</section>
+<!-- ============ 03 ============ -->
+<section id="s3">
+  <div class="shead"><span class="sn">03</span><h2><span class="de">Neue Architektur</span><span class="en">New architecture</span></h2></div>
+  <div class="de">
+    <p>Sechzehn Seiten sind für ein Haus wie Ihres zu viele. Nicht weil zu viel Inhalt da wäre — sondern weil der Inhalt an der falschen Stelle geteilt wurde. Wir haben nicht nach Themen sortiert, sondern nach der <strong>Frage, mit der jemand auf Ihre Seite kommt</strong>.</p>
+    <p>Vier Fragen decken fast alles ab: <em>Kann mir jemand helfen?</em> · <em>Wie und wo trainiere ich?</em> · <em>Was kostet es?</em> · <em>Wann und wo finde ich Sie?</em> Daraus werden acht Seiten. Klicken Sie rechts eine neue Seite an, um zu sehen, was in ihr aufgeht.</p>
+  </div>
+  <div class="en">
+    <p>Sixteen pages is too many for a practice like yours. Not because there is too much content — but because the content was divided in the wrong places. We did not sort by topic; we sorted by <strong>the question someone arrives with</strong>.</p>
+    <p>Four questions cover nearly everything: <em>Can someone help me?</em> · <em>How and where do I train?</em> · <em>What does it cost?</em> · <em>When and where do I find you?</em> That yields eight pages. Click a new page on the right to see what folds into it.</p>
+  </div>
+
+  <div class="widget">
+    <div class="widget__bar">
+      <h4><span class="de">Vorher / Nachher — Seitenstruktur</span><span class="en">Before / after — page structure</span></h4>
+      <span class="mono" style="font-size:11px; color:var(--moss)">16 → 8 + 2</span>
+    </div>
+    <div class="widget__body">
+      <div class="ia">
+        <div class="ia__col">
+          <h4><span class="de">Heute — 16 Seiten</span><span class="en">Today — 16 pages</span></h4>
+          <div class="ia__list" id="ia-old">
+            <div class="ia__item" data-k="home">Start<em>5 801</em></div>
+            <div class="ia__item" data-k="praxis">Physiopraxis<em>944</em></div>
+            <div class="ia__item" data-k="praxis">Anwendungsbereiche<em>248</em></div>
+            <div class="ia__item" data-k="training">Milon-Zirkel<em>2 363</em></div>
+            <div class="ia__item" data-k="training">Frei-medical<em>1 736</em></div>
+            <div class="ia__item" data-k="training">Freies Training<em>3 336</em></div>
+            <div class="ia__item" data-k="kurse">Reha-Sport<em>1 779</em></div>
+            <div class="ia__item" data-k="kurse">Kurse vor Ort<em>7 510</em></div>
+            <div class="ia__item" data-k="preise">Mitgliedschaft<em>3 665</em></div>
+            <div class="ia__item" data-k="firma">Firmenfitness<em>1 516</em></div>
+            <div class="ia__item" data-k="karriere">Stellen Praxis<em>1 629</em></div>
+            <div class="ia__item" data-k="karriere">Stellen Fitness<em>1 673</em></div>
+            <div class="ia__item" data-k="kontakt">Öffnungszeiten<em>501</em></div>
+            <div class="ia__item" data-k="kontakt">Kontakt<em>574</em></div>
+            <div class="ia__item" data-k="recht">Impressum<em>2 686</em></div>
+            <div class="ia__item" data-k="recht">Datenschutz<em>43 742</em></div>
+          </div>
+        </div>
+        <div class="ia__arrow" aria-hidden="true">→</div>
+        <div class="ia__col">
+          <h4><span class="de">Neu — 8 Seiten + 2 im Fußbereich</span><span class="en">New — 8 pages + 2 in the footer</span></h4>
+          <div class="ia__list" id="ia-new">
+            <button type="button" class="ia__group" data-g="home"><b>Start</b><span class="de">Wer Sie sind, in 30 Sekunden</span><span class="en">Who you are, in 30 seconds</span></button>
+            <button type="button" class="ia__group" data-g="praxis"><b>Physiopraxis</b><span class="de">Praxis Berndt + Anwendungsbereiche als Abschnitt</span><span class="en">Berndt practice + treatment types as a section</span></button>
+            <button type="button" class="ia__group" data-g="training"><b>Trainingsfläche</b><span class="de">Milon · Frei-medical · Atletica · Freifläche</span><span class="en">Milon · Frei-medical · Atletica · open area</span></button>
+            <button type="button" class="ia__group" data-g="kurse"><b>Kurse &amp; Reha-Sport</b><span class="de">Ein Wochenplan für alles, was in der Gruppe läuft</span><span class="en">One weekly plan for everything run in groups</span></button>
+            <button type="button" class="ia__group" data-g="preise"><b>Mitgliedschaft</b><span class="de">Preise, Förderung, Personal Training</span><span class="en">Prices, subsidies, personal training</span></button>
+            <button type="button" class="ia__group" data-g="firma"><b>Firmenfitness</b><span class="de">Eigene Zielgruppe, eigener Weg</span><span class="en">Its own audience, its own path</span></button>
+            <button type="button" class="ia__group" data-g="karriere"><b>Karriere</b><span class="de">Beide Stellen auf einer Seite</span><span class="en">Both openings on one page</span></button>
+            <button type="button" class="ia__group" data-g="kontakt"><b>Kontakt &amp; Öffnungszeiten</b><span class="de">Eine Antwort auf „wann und wo?“</span><span class="en">One answer to "when and where?"</span></button>
+            <button type="button" class="ia__group" data-g="recht"><b>Impressum · Datenschutz</b><span class="de">Pflichtseiten, nur im Fußbereich</span><span class="en">Mandatory pages, footer only</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub"><h3><span class="de">Warum genau diese Schnitte</span><span class="en">Why these particular cuts</span></h3></div>
+  <div class="tw tw--tight">
+    <table>
+      <thead><tr>
+        <th><span class="de">Entscheidung</span><span class="en">Decision</span></th>
+        <th><span class="de">Begründung</span><span class="en">Reasoning</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td><b><span class="de">Drei Gerätebereiche → eine Trainingsfläche</span><span class="en">Three equipment areas → one training floor</span></b></td><td><span class="de">Milon, Frei-medical und der freie Bereich stehen im selben Raum. Wer wissen will, wie er bei Ihnen trainiert, will nicht dreimal navigieren, sondern einmal die Halle sehen. Der interaktive Hallenplan (Abschnitt 06) ersetzt die drei Seiten und erklärt gleichzeitig, was wo steht.</span><span class="en">Milon, Frei-medical and the open area are in the same room. Someone asking how they would train here does not want to navigate three times — they want to see the floor once. The interactive floor plan (section 06) replaces all three pages and simultaneously explains what stands where.</span></td></tr>
+        <tr><td><b><span class="de">Reha-Sport → zu den Kursen</span><span class="en">Reha-Sport → with the courses</span></b></td><td><span class="de">Reha-Sport steht bereits viermal in Ihrem Kursplan: montags 17:30, mittwochs 18:00 und 19:00, freitags 11:00. Es ist ein Gruppenangebot in Ihren Räumen. Es gehört in denselben Plan — mit einem eigenen Abschnitt, der die ärztliche Verordnung erklärt.</span><span class="en">Reha-Sport already appears four times in your weekly plan: Monday 17:30, Wednesday 18:00 and 19:00, Friday 11:00. It is a group offering in your rooms. It belongs in the same plan — with its own section explaining the medical prescription.</span></td></tr>
+        <tr><td><b><span class="de">Anwendungsbereiche → Abschnitt statt Seite</span><span class="en">Treatment types → section, not page</span></b></td><td><span class="de">Eine Seite, die nur ankündigt, dass später Inhalt kommt, beschädigt Vertrauen und Auffindbarkeit. Als Abschnitt auf der Praxisseite kann sie wachsen, ohne als leere Seite zu erscheinen — und Sie können sie jederzeit füllen.</span><span class="en">A page that only announces future content damages both trust and findability. As a section on the practice page it can grow without ever appearing as an empty page — and you can fill it whenever you are ready.</span></td></tr>
+        <tr><td><b><span class="de">Öffnungszeiten + Kontakt → eine Seite</span><span class="en">Hours + contact → one page</span></b></td><td><span class="de">Zusammen 1 075 Zeichen. Beide beantworten dieselbe Frage. Die Öffnungszeiten stehen zusätzlich weiterhin im Kopfbereich jeder Seite als Live-Anzeige „jetzt geöffnet“.</span><span class="en">1,075 characters between them. Both answer the same question. The hours additionally remain in the header of every page as a live "open now" indicator.</span></td></tr>
+        <tr><td><b><span class="de">Zwei Stellenanzeigen → eine Karriereseite</span><span class="en">Two job ads → one careers page</span></b></td><td><span class="de">Stellen ändern sich. Eine Seite mit aufklappbaren Anzeigen lässt sich pflegen, ohne dass beim Besetzen einer Stelle eine Seite tot im Menü stehen bleibt.</span><span class="en">Openings change. One page with expandable postings can be maintained without leaving a dead page in the menu once a role is filled.</span></td></tr>
+        <tr><td><b><span class="de">Firmenfitness bleibt eigenständig</span><span class="en">Firmenfitness stays separate</span></b></td><td><span class="de">Anderes Publikum, andere Handlung. Ein Personalleiter sucht keine Mitgliedsbeiträge, sondern Absetzbarkeit und Struktur. Diese Seite darf man verlinken, ohne Privatkundenpreise mitzuschicken.</span><span class="en">Different audience, different action. An HR manager is not looking for membership fees but for tax deductibility and structure. This page can be sent as a link without private-customer pricing attached.</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="de"><p class="note"><strong>Was wir bewusst nicht verlieren.</strong> Suchmaschinen bewerten heute einzelne Seiten wie „Milon Zirkel Eschweiler“. Beim Zusammenlegen bleiben deshalb alle bisherigen Adressen gültig: Wer <span class="mono">/milon-zirkel</span> aufruft, landet auf der Trainingsfläche direkt beim Milon-Abschnitt — mit eigenem Seitentitel und eigener Beschreibung für Google. Kein Link im Netz, in einer E-Mail oder auf einem Flyer läuft ins Leere.</p></div>
+  <div class="en"><p class="note"><strong>What we deliberately do not lose.</strong> Search engines currently rank individual pages such as "Milon Zirkel Eschweiler". So when we merge, every existing address stays valid: anyone opening <span class="mono">/milon-zirkel</span> lands on the training floor at the Milon section — with its own page title and its own description for Google. No link on the web, in an email or on a flyer breaks.</p></div>
+</section>
+<!-- ============ 04 ============ -->
+<section id="s4">
+  <div class="shead"><span class="sn">04</span><h2><span class="de">Farbklima</span><span class="en">Colour</span></h2></div>
+  <div class="de">
+    <p>Die Farben kommen aus Ihrem Haus, nicht aus einem Wellness-Katalog. An Ihren Wänden sind Waldmotive gedruckt, an der Decke hängt ein Ringlicht. Ihre eigenen Begriffe sind <em>Gesundheit, Bewegung, Fitness und Therapie</em> — in dieser Reihenfolge steht es auf Ihrer Startseite, und Gesundheit steht vorn.</p>
+    <p>Deshalb ist der Grundton kein Klinikweiß. Reines Weiß liest sich kühl und austauschbar; es widerspricht dem, was Sie versprechen („Wir freuen uns darauf, Sie persönlich kennenzulernen“). Der Grund ist ein sehr blasses Birkengrün — ruhig, aber nicht steril.</p>
+  </div>
+  <div class="en">
+    <p>The colours come from your building, not from a wellness catalogue. Forest scenes are printed on your walls; a ring light hangs from the ceiling. Your own words are <em>health, movement, fitness and therapy</em> — that is the order on your home page, and health comes first.</p>
+    <p>So the base tone is not clinical white. Pure white reads cold and interchangeable; it contradicts what you promise ("we look forward to meeting you in person"). The ground is a very pale birch green — calm, but not sterile.</p>
+  </div>
+  <div class="sw">
+    <div class="swi"><i style="background:var(--ground); border-bottom:1px solid var(--line-soft)"></i><div><b><span class="de">Birkengrün</span><span class="en">Birch green</span></b><code>#EEF1EA · #0B1310</code><p><span class="de">Der Grund. Papierähnlich, leicht ins Grüne gezogen — die Wandmotive im Studio.</span><span class="en">The ground. Paper-like, pulled slightly green — the wall murals in the studio.</span></p></div></div>
+    <div class="swi"><i style="background:var(--ink)"></i><div><b><span class="de">Waldschwarz</span><span class="en">Forest black</span></b><code>#122019 · #E4EBDF</code><p><span class="de">Fließtext. Kein reines Schwarz — grünstichig, dadurch weicher bei langen deutschen Wörtern.</span><span class="en">Body text. Not pure black — green-tinted, so long German words read more softly.</span></p></div></div>
+    <div class="swi"><i style="background:var(--puls)"></i><div><b>Puls</b><code>#6E960A · #A9DC22</code><p><span class="de">Bewegung. Ein <em>medizinisches</em> Limette, ins Olive gezogen — kein Fitnessstudio-Neon.</span><span class="en">Movement. A <em>medical</em> lime, pulled toward olive — not gym neon.</span></p></div></div>
+    <div class="swi"><i style="background:var(--klinik)"></i><div><b>Klinik</b><code>#1E3D55 · #7FA8C6</code><p><span class="de">Autorität. Nur für Verordnung, Krankenkasse, Pflichtangaben — nie dekorativ.</span><span class="en">Authority. Prescription, health insurers, mandatory notices only — never decorative.</span></p></div></div>
+    <div class="swi"><i style="background:var(--moss)"></i><div><b>Moos</b><code>#4F6B57 · #8FA894</code><p><span class="de">Die leise Ebene: Linien, Beschriftungen, Zeitangaben, Hinweise.</span><span class="en">The quiet layer: rules, labels, times, notes.</span></p></div></div>
+    <div class="swi"><i style="background:var(--night)"></i><div><b><span class="de">Nacht (fest)</span><span class="en">Night (fixed)</span></b><code>#122019</code><p><span class="de">Dunkle Flächen wie der Fußbereich. Wechselt <strong>nie</strong> mit dem Anzeigemodus — genau hier lag der Fehler.</span><span class="en">Dark surfaces such as the footer. <strong>Never</strong> flips with display mode — this is exactly where the bug was.</span></p></div></div>
+  </div>
+
+  <div class="sub"><h3><span class="de">Lesbarkeit, gemessen</span><span class="en">Legibility, measured</span></h3></div>
+  <div class="de"><p>Kontrast ist keine Geschmacksfrage, sondern eine Zahl. Die Richtlinie WCAG 2.1 AA verlangt mindestens <span class="mono">4,5 : 1</span> für Fließtext und <span class="mono">3 : 1</span> für große Schrift. Gemessen im hellen und im dunklen Anzeigemodus:</p></div>
+  <div class="en"><p>Contrast is not a matter of taste but a number. WCAG 2.1 AA requires at least <span class="mono">4.5 : 1</span> for body text and <span class="mono">3 : 1</span> for large text. Measured in both light and dark display mode:</p></div>
+  <div class="tw tw--tight">
+    <table>
+      <thead><tr>
+        <th><span class="de">Kombination</span><span class="en">Combination</span></th>
+        <th class="n"><span class="de">Hell</span><span class="en">Light</span></th>
+        <th class="n"><span class="de">Dunkel</span><span class="en">Dark</span></th>
+        <th><span class="de">Bewertung</span><span class="en">Verdict</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td><span class="de">Fließtext auf Grund</span><span class="en">Body text on ground</span></td><td class="n">14,8 : 1</td><td class="n">15,5 : 1</td><td><span class="tag tag--ok">AAA</span></td></tr>
+        <tr><td><span class="de">Sekundärtext auf Grund</span><span class="en">Secondary text on ground</span></td><td class="n">8,7 : 1</td><td class="n">9,1 : 1</td><td><span class="tag tag--ok">AAA</span></td></tr>
+        <tr><td><span class="de">Moos (Beschriftungen)</span><span class="en">Moss (labels)</span></td><td class="n">5,1 : 1</td><td class="n">7,4 : 1</td><td><span class="tag tag--ok">AA</span></td></tr>
+        <tr><td><span class="de">Klinik-Navy auf Grund</span><span class="en">Klinik navy on ground</span></td><td class="n">9,9 : 1</td><td class="n">6,8 : 1</td><td><span class="tag tag--ok">AAA / AA</span></td></tr>
+        <tr><td><span class="de">Fußbereich, Links</span><span class="en">Footer, links</span></td><td class="n">11,4 : 1</td><td class="n">11,4 : 1</td><td><span class="tag tag--ok">AAA</span></td></tr>
+        <tr><td><span class="de">Fußbereich, Beschriftungen</span><span class="en">Footer, labels</span></td><td class="n">6,3 : 1</td><td class="n">6,3 : 1</td><td><span class="tag tag--ok">AA</span></td></tr>
+        <tr><td><span class="de">Puls-Limette als Fließtext</span><span class="en">Puls lime as body text</span></td><td class="n">3,1 : 1</td><td class="n">11,7 : 1</td><td><span class="tag tag--warn"><span class="de">nur Marke &amp; Marker</span><span class="en">brand &amp; markers only</span></span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="de"><p class="note note--puls"><strong>Die letzte Zeile ist Absicht, kein Versäumnis.</strong> Ein Grün, das auf hellem Grund als Fließtext bestehen würde, wäre so dunkel, dass es nicht mehr nach Bewegung aussieht. Wir haben uns für die Farbe entschieden und ihr eine Rolle gegeben: Puls markiert, es schreibt nicht. Kein Satz, den Sie lesen müssen, steht in Limette — nur Fortschrittsmarken, aktive Zustände und das „fit“ in Ihrem Namen, das als Bildmarke ohnehin ausgenommen ist.</p></div>
+  <div class="en"><p class="note note--puls"><strong>The last row is deliberate, not an oversight.</strong> A green dark enough to pass as body text on a light ground would no longer look like movement. We chose the colour and gave it a job: Puls marks, it does not write. No sentence you need to read is set in lime — only progress marks, active states, and the "fit" in your name, which is exempt anyway as part of a logo.</p></div>
+  <div class="de"><p class="note note--risk"><strong>Der behobene Fehler.</strong> Im dunklen Modus stand die Fußzeile auf <span class="mono">1,04 : 1</span> — hellgrüne Schrift auf hellgrünem Grund. Ursache: Die dunkle Fläche benutzte einen Farbwert, der beim Umschalten des Anzeigemodus mitkippt, während die Schriftfarbe fest blieb. Seither gibt es einen getrennten, festen Wert für dunkle Flächen. Sichtbar in der Fußzeile dieser Seite: Sie sieht in beiden Modi gleich aus — das ist der Punkt.</p></div>
+  <div class="en"><p class="note note--risk"><strong>The bug we fixed.</strong> In dark mode the footer measured <span class="mono">1.04 : 1</span> — pale green text on a pale green ground. The cause: the dark surface used a colour value that flips with display mode, while the text colour stayed fixed. There is now a separate, fixed value for dark surfaces. You can see it in this page's own footer: it looks identical in both modes — that is the point.</p></div>
+</section>
+
+<!-- ============ 05 ============ -->
+<section id="s5">
+  <div class="shead"><span class="sn">05</span><h2><span class="de">Schrift</span><span class="en">Typography</span></h2></div>
+  <div class="de"><p>Drei Schriften, drei klar getrennte Aufgaben. Keine davon ist dekorativ ausgewählt — jede löst ein Problem, das Ihre Inhalte tatsächlich haben.</p></div>
+  <div class="en"><p>Three typefaces, three clearly separated jobs. None was chosen decoratively — each solves a problem your content actually has.</p></div>
+  <div class="spec">
+    <div class="spec__row">
+      <span>Archivo · <span class="de">Überschriften &amp; Beschilderung</span><span class="en">Headings &amp; signage</span></span>
+      <b class="f-sans">Strukturiertes Muskeltraining</b>
+      <p><span class="de">Eine Grotesk mit veränderbarer Breite. In der gedehnten Form wirkt sie wie Beschilderung an einem Gerät — passend zu einem Haus, in dem alles geführt, eingestellt und dosiert wird. Sie trägt lange deutsche Komposita, ohne zu brechen.</span><span class="en">A grotesque with variable width. In its expanded form it reads like signage on a machine — fitting for a building where everything is guided, adjusted and dosed. It carries long German compounds without breaking.</span></p>
+    </div>
+    <div class="spec__row">
+      <span>Source Serif 4 · <span class="de">Fließtext</span><span class="en">Body text</span></span>
+      <b class="f-serif" style="font-weight:400"><span class="de">Bewegung ist Medizin — und wir unterstützen Sie dabei.</span><span class="en">Movement is medicine — and we support you in it.</span></b>
+      <p><span class="de">Ihre Texte sind lang und erklärend, nicht werblich. Eine Serifenschrift wird auf Bildschirmen langsamer und aufmerksamer gelesen als eine Grotesk — genau richtig für Sätze über Verordnung, Gelenke und Belastungssteuerung. Sie ist außerdem die Schriftfamilie, die man aus medizinischer Fachliteratur kennt.</span><span class="en">Your texts are long and explanatory, not promotional. A serif is read more slowly and attentively on screen than a sans — exactly right for sentences about prescriptions, joints and load control. It is also the family readers know from medical literature.</span></p>
+    </div>
+    <div class="spec__row">
+      <span>IBM Plex Mono · <span class="de">jede Zahl auf der Website</span><span class="en">every number on the site</span></span>
+      <b class="f-mono" style="font-weight:500; font-size:22px">11 · 33 · 66–99 min &nbsp; 50/18 &nbsp; 69,90 €</b>
+      <p><span class="de">Das ist die eigentliche Idee. Jede Zahl — Uhrzeit, Preis, Dauer, Einheit — steht in derselben Schreibmaschinenschrift, in der auch Rezepte und Messprotokolle gesetzt sind. Dadurch entsteht ein durchgehender Faden: Ihre Zahlen sind <em>Dosierung</em>, keine Werbeaussage. Alle Ziffern sind gleich breit, damit Preise und Zeiten in Spalten untereinander stehen.</span><span class="en">This is the actual idea. Every number — time, price, duration, session — is set in the same typewriter face used for prescriptions and measurement records. That creates a continuous thread: your numbers are <em>dosage</em>, not advertising. All digits share one width, so prices and times line up in columns.</span></p>
+    </div>
+  </div>
+  <div class="de"><p class="note note--warn"><strong>Wichtig für den Datenschutz:</strong> Alle drei Schriften sind frei lizenziert und werden von <em>Ihrem eigenen</em> Server ausgeliefert, nicht von Google. Warum das rechtlich zwingend ist, steht in Abschnitt 08.</p></div>
+  <div class="en"><p class="note note--warn"><strong>Important for data protection:</strong> all three typefaces are openly licensed and are served from <em>your own</em> server, not from Google. Section 08 explains why that is legally required.</p></div>
+</section>
+<!-- ============ 06 ============ -->
+<section id="s6">
+  <div class="shead"><span class="sn">06</span><h2><span class="de">Interaktive Bausteine</span><span class="en">Interactive modules</span></h2></div>
+  <div class="de">
+    <p>Sechs Inhalte auf Ihrer Seite sind heute Fließtext, obwohl sie eigentlich Abläufe, Räume oder Rechnungen sind. Ein Absatz, der beschreibt, dass 50 Einheiten in 18 Monaten aufgebraucht werden müssen, ist schwerer zu verstehen als eine Leiste mit 50 Feldern. Für diese sechs schlagen wir Bausteine vor, die man <strong>bedienen</strong> kann.</p>
+    <p>Alle Bausteine unten sind lauffähig — probieren Sie sie aus. Wo wir noch Angaben von Ihnen brauchen, ist der Baustein als <span class="mockflag">Platzhalter</span> gekennzeichnet.</p>
+  </div>
+  <div class="en">
+    <p>Six pieces of content on your site are currently prose, although they are really processes, rooms or calculations. A paragraph explaining that 50 sessions must be used within 18 months is harder to grasp than a bar of 50 squares. For these six we propose modules you can <strong>operate</strong>.</p>
+    <p>Every module below is live — try them. Where we still need information from you, the module is marked as a <span class="mockflag">placeholder</span>.</p>
+  </div>
+
+  <!-- W1 -->
+  <div class="widget">
+    <div class="widget__bar">
+      <h4>01 · <span class="de">Dosierung — der Milon-Zirkel</span><span class="en">Dosage — the Milon circuit</span></h4>
+      <span class="mockflag"><span class="de">Gerätereihenfolge Platzhalter</span><span class="en">station order placeholder</span></span>
+    </div>
+    <div class="widget__body">
+      <div class="de"><p style="font-size:15px">Ihr Text nennt 11 Minuten pro Durchgang, rund 33 Minuten pro Einheit und 66–99 Minuten pro Woche. Der Ring läuft in Echtzeit: eine volle Umdrehung dauert 11 Sekunden, also einen Durchgang im Zeitraffer. Station anklicken.</p></div>
+      <div class="en"><p style="font-size:15px">Your text names 11 minutes per round, roughly 33 minutes per session and 66–99 minutes per week. The ring runs in real time: one full revolution takes 11 seconds — one round, time-lapsed. Click a station.</p></div>
+      <div class="dose">
+        <svg viewBox="0 0 240 240" id="ring" role="img" aria-label="Milon-Zirkel">
+                  <g id="ring-segs"></g>
+          <g class="dose__mark"><circle cx="120" cy="32" r="5.5" fill="var(--puls)"/></g>
+          <text class="dose__big" x="120" y="114" id="ring-big">33</text>
+          <text class="dose__hub" x="120" y="134" id="ring-unit">Minuten / Einheit</text>
+          <text class="dose__hub" x="120" y="152" id="ring-sub" style="font-size:9.5px">3 Durchgänge à 11 min</text>
+        </svg>
+        <div>
+          <div class="dose__station" id="ring-info"></div>
+          <div class="ctl" role="group">
+            <button type="button" class="chip is-on" data-week="2">2×<span class="de"> / Woche</span><span class="en"> / week</span></button>
+            <button type="button" class="chip" data-week="3">3×<span class="de"> / Woche</span><span class="en"> / week</span></button>
+          </div>
+          <div class="readout">
+            <div><span class="de">Pro Woche</span><span class="en">Per week</span><b id="ring-week">66 min</b></div>
+            <div><span class="de">Pro Monat</span><span class="en">Per month</span><b id="ring-month">4,4 h</b></div>
+            <div><span class="de">Anteil der Woche</span><span class="en">Share of a week</span><b id="ring-pct">0,7 %</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- W2 -->
+  <div class="widget">
+    <div class="widget__bar">
+      <h4>02 · <span class="de">Hallenplan — was steht wo</span><span class="en">Floor plan — what stands where</span></h4>
+      <span class="mockflag"><span class="de">Grundriss Platzhalter — wir brauchen Maße &amp; Fotos</span><span class="en">layout placeholder — we need dimensions &amp; photos</span></span>
+    </div>
+    <div class="widget__body">
+      <div class="de"><p style="font-size:15px">Dieser Baustein ersetzt die drei getrennten Geräteseiten. Ein Klick auf eine Zone zeigt, was dort steht und für wen sie gedacht ist. <strong>Der Grundriss unten ist geraten</strong> — sobald Sie uns Fotos und ungefähre Maße geben, zeichnen wir ihn maßstäblich nach.</p></div>
+      <div class="en"><p style="font-size:15px">This module replaces the three separate equipment pages. Clicking a zone shows what stands there and who it is for. <strong>The layout below is guessed</strong> — as soon as you send photos and rough dimensions we will redraw it to scale.</p></div>
+      <div class="plan">
+        <svg viewBox="0 0 640 430" id="plan" role="img" aria-label="Hallenplan">
+          <rect x="8" y="8" width="624" height="414" rx="3" fill="var(--ground-2)" stroke="var(--line)" stroke-width="1.5"/>
+          <g class="zone" data-z="milon" tabindex="0" role="button"><rect x="20" y="20" width="260" height="140" rx="2" fill="var(--raise)" stroke="var(--line)"/><text x="34" y="42">MILON-ZIRKEL</text></g>
+          <g class="zone" data-z="frei" tabindex="0" role="button"><rect x="290" y="20" width="180" height="140" rx="2" fill="var(--raise)" stroke="var(--line)"/><text x="304" y="42">FREI-MEDICAL</text></g>
+          <g class="zone" data-z="frei2" tabindex="0" role="button"><rect x="20" y="170" width="260" height="150" rx="2" fill="var(--raise)" stroke="var(--line)"/><text x="34" y="192">FREIFLÄCHE</text></g>
+          <g class="zone" data-z="atletica" tabindex="0" role="button"><rect x="290" y="170" width="180" height="150" rx="2" fill="var(--raise)" stroke="var(--line)"/><text x="304" y="192">ATLETICA</text></g>
+          <g class="zone" data-z="empfang" tabindex="0" role="button"><rect x="20" y="330" width="130" height="80" rx="2" fill="var(--raise)" stroke="var(--line)"/><text x="34" y="352">EMPFANG</text></g>
+          <g class="zone" data-z="umkleide" tabindex="0" role="button"><rect x="160" y="330" width="120" height="80" rx="2" fill="var(--raise)" stroke="var(--line)"/><text x="174" y="352">UMKLEIDEN</text></g>
+          <g class="zone" data-z="kursraum" tabindex="0" role="button"><rect x="290" y="330" width="180" height="80" rx="2" fill="var(--raise)" stroke="var(--line)"/><text x="304" y="352">KURSRAUM</text></g>
+          <g class="zone" data-z="praxis" tabindex="0" role="button"><rect x="480" y="20" width="140" height="390" rx="2" fill="var(--raise)" stroke="var(--line)"/><text x="494" y="42">PHYSIOPRAXIS</text></g>
+        </svg>
+        <div class="plan__info" id="plan-info"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- W3 -->
+  <div class="widget">
+    <div class="widget__bar">
+      <h4>03 · <span class="de">Reha-Sport — 50 Einheiten, 18 Monate</span><span class="en">Reha-Sport — 50 sessions, 18 months</span></h4>
+    </div>
+    <div class="widget__body">
+      <div class="de"><p style="font-size:15px">„Meist 50 Einheiten, gültig für 18 Monate ab Start der Verordnung“ — das steht heute in einem Absatz. Als Rechner beantwortet es die eigentliche Frage: <em>Schaffe ich das?</em></p></div>
+      <div class="en"><p style="font-size:15px">"Usually 50 sessions, valid for 18 months from the start of the prescription" — today that sits inside a paragraph. As a calculator it answers the real question: <em>can I actually get through them?</em></p></div>
+      <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:flex-end; margin-bottom:6px">
+        <label class="field"><span class="de">Beginn der Verordnung</span><span class="en">Prescription start</span><input type="date" id="reha-date" value="2026-09-14"></label>
+        <label class="field" style="flex:1 1 200px"><span id="reha-lab"></span><input type="range" id="reha-freq" min="1" max="3" step="1" value="2"></label>
+      </div>
+      <div class="reha__dots" id="reha-dots"></div>
+      <div class="readout">
+        <div><span class="de">Dauer</span><span class="en">Duration</span><b id="reha-weeks"></b></div>
+        <div><span class="de">Letzte Einheit am</span><span class="en">Last session on</span><b id="reha-end"></b></div>
+        <div><span class="de">Verordnung endet</span><span class="en">Prescription expires</span><b id="reha-exp"></b></div>
+        <div><span class="de">Puffer</span><span class="en">Buffer</span><b id="reha-buf"></b></div>
+      </div>
+      <p class="note" id="reha-note" style="margin-top:18px; margin-bottom:0"></p>
+    </div>
+  </div>
+
+  <!-- W4 -->
+  <div class="widget">
+    <div class="widget__bar">
+      <h4>04 · <span class="de">Kursplan der Woche</span><span class="en">Weekly course plan</span></h4>
+      <span class="mono" style="font-size:11px; color:var(--moss)">18 <span class="de">Termine</span><span class="en">slots</span></span>
+    </div>
+    <div class="widget__body">
+      <div class="de"><p style="font-size:15px">Heute sind das sechs Listen untereinander. Als Wochenraster sieht man auf einen Blick, wann bei Ihnen etwas los ist — der heutige Tag ist hervorgehoben.</p></div>
+      <div class="en"><p style="font-size:15px">Today this is six lists stacked vertically. As a weekly grid you can see at a glance when things happen — today's column is highlighted.</p></div>
+      <div class="ctl" id="k-ctl">
+        <button type="button" class="chip is-on" data-cat="all"><span class="de">Alle</span><span class="en">All</span></button>
+        <button type="button" class="chip" data-cat="reha">Reha-Sport</button>
+        <button type="button" class="chip" data-cat="pilates">Pilates</button>
+        <button type="button" class="chip" data-cat="praevention"><span class="de">Prävention</span><span class="en">Prevention</span></button>
+        <button type="button" class="chip" data-cat="entspannung"><span class="de">Entspannung</span><span class="en">Relaxation</span></button>
+        <button type="button" class="chip" data-cat="ausdauer"><span class="de">Ausdauer</span><span class="en">Endurance</span></button>
+        <button type="button" class="chip" data-cat="kraft"><span class="de">Kraft</span><span class="en">Strength</span></button>
+        <button type="button" class="chip" data-cat="gap" style="border-color:var(--warn); color:var(--warn)"><span class="de">ohne Beschreibung</span><span class="en">no description</span></button>
+      </div>
+      <div class="kw"><div class="kgrid" id="kgrid"></div></div>
+      <p class="note note--warn" style="margin-top:16px; margin-bottom:0"><span class="de">Die mit <strong>?</strong> markierten Termine haben auf Ihrer Website keine Beschreibung. Fünf Kursarten betrifft das. Umgekehrt ist die <strong>Laufgruppe</strong> ausführlich beschrieben, steht aber in keinem Wochentag.</span><span class="en">Slots marked <strong>?</strong> have no description anywhere on your website — five course types are affected. Conversely the <strong>running group</strong> is described in detail but appears on no weekday.</span></p>
+    </div>
+  </div>
+
+  <!-- W5 -->
+  <div class="widget">
+    <div class="widget__bar">
+      <h4>05 · <span class="de">Mitgliedschaft — was zahle ich wirklich</span><span class="en">Membership — what do I actually pay</span></h4>
+    </div>
+    <div class="widget__body">
+      <div class="de"><p style="font-size:15px">„12 Monate Training und nur 10 Monate bezahlen“ ist ein guter Satz — aber niemand rechnet ihn im Kopf gegen den Standardvertrag. Hier steht die Rechnung.</p></div>
+      <div class="en"><p style="font-size:15px">"12 months of training and pay for only 10" is a good line — but nobody works it out against the standard contract in their head. Here is the arithmetic.</p></div>
+      <div class="ctl" id="m-ctl">
+        <button type="button" class="chip is-on" data-m="std"><span class="de">Standardvertrag</span><span class="en">Standard contract</span></button>
+        <button type="button" class="chip" data-m="kk"><span class="de">Gefördert durch die Krankenkasse</span><span class="en">Subsidised by health insurer</span></button>
+      </div>
+      <div class="mgrid" id="mgrid"></div>
+      <p class="note" id="m-note" style="margin-top:18px; margin-bottom:0"></p>
+    </div>
+  </div>
+
+  <!-- W6 -->
+  <div class="widget">
+    <div class="widget__bar">
+      <h4>06 · <span class="de">Der Weg durch Ihr Haus</span><span class="en">The path through your practice</span></h4>
+    </div>
+    <div class="widget__body">
+      <div class="de"><p style="font-size:15px">Das ist das stärkste Argument, das Ihre Website bisher nicht führt: Bei Ihnen endet die Therapie nicht an einer Tür. Ein Patient kann vom Rezept bis zum Dauertraining im selben Haus bleiben. Baustein anklicken.</p></div>
+      <div class="en"><p style="font-size:15px">This is the strongest argument your website does not currently make: with you, therapy does not stop at a door. A patient can stay in the same building from prescription to permanent training. Click a stage.</p></div>
+      <div class="path" id="path"></div>
+      <div class="pinfo" id="path-info"></div>
+    </div>
+  </div>
+</section>
+<!-- ============ 07 ============ -->
+<section id="s7">
+  <div class="shead"><span class="sn">07</span><h2><span class="de">Bedienbarkeit</span><span class="en">Usability</span></h2></div>
+  <div class="de"><p>Ein erheblicher Teil Ihrer Besucher kommt mit einer Einschränkung, in Eile oder mit dem Telefon in der Hand — oft alles drei. Ihre Kurse richten sich ausdrücklich an Senioren und an „Personen mit eingeschränkter Mobilität“. Das ist keine Randgruppe, das ist Ihre Zielgruppe.</p></div>
+  <div class="en"><p>A substantial share of your visitors arrive with an impairment, in a hurry, or holding a phone — often all three. Your courses explicitly address seniors and "people with restricted mobility". That is not an edge case; that is your audience.</p></div>
+  <div class="grid g2">
+    <div class="panel"><h3><span class="de">Für das Telefon gebaut</span><span class="en">Built for the phone</span></h3><p><span class="de">Ein einspaltiger Lesefluss, Bedienelemente mindestens 44 × 44 Pixel groß, Telefonnummer und Adresse als tippbare Links. Das Vollbildmenü ist mit dem Daumen erreichbar, nicht nur mit dem Zeigefinger.</span><span class="en">A single-column reading flow, controls at least 44 × 44 pixels, phone number and address as tappable links. The full-screen menu is reachable with a thumb, not only an index finger.</span></p></div>
+    <div class="panel"><h3><span class="de">Ohne Maus benutzbar</span><span class="en">Usable without a mouse</span></h3><p><span class="de">Jedes Bedienelement ist mit der Tabulatortaste erreichbar und zeigt einen sichtbaren Fokusrahmen. Ein Sprunglink führt direkt zum Inhalt. Alle Bausteine oben funktionieren mit der Tastatur.</span><span class="en">Every control is reachable with the tab key and shows a visible focus ring. A skip link jumps straight to the content. Every module above works from the keyboard.</span></p></div>
+    <div class="panel"><h3><span class="de">Vorlesbar</span><span class="en">Readable aloud</span></h3><p><span class="de">Ihre Öffnungszeiten sind jetzt echter Text statt eines Bildes — ein Screenreader liest sie vor, Google findet sie, und man kann sie kopieren. Bilder haben Alternativtexte, Überschriften eine korrekte Rangfolge.</span><span class="en">Your opening hours are now real text instead of an image — a screen reader speaks them, Google finds them, and they can be copied. Images carry alternative text; headings follow a correct hierarchy.</span></p></div>
+    <div class="panel"><h3><span class="de">Heller und dunkler Modus</span><span class="en">Light and dark mode</span></h3><p><span class="de">Die Seite folgt der Einstellung des Geräts. Wer abends mit dunklem Bildschirm liest, bekommt eine eigens abgestimmte Palette — nicht dieselbe Seite mit invertierten Farben.</span><span class="en">The site follows the device setting. Anyone reading in the evening with a dark screen gets a palette tuned for it — not the same page with inverted colours.</span></p></div>
+    <div class="panel"><h3><span class="de">Ruhige Bewegung</span><span class="en">Calm motion</span></h3><p><span class="de">Animationen sind langsam und dienen der Orientierung. Wer im Betriebssystem „Bewegung reduzieren“ eingestellt hat — häufig bei Schwindel oder nach einer Gehirnerschütterung — bekommt eine ruhende Seite.</span><span class="en">Animations are slow and serve orientation. Anyone who has set "reduce motion" in their operating system — common with vertigo or after a concussion — gets a still page.</span></p></div>
+    <div class="panel"><h3><span class="de">Schnell auch im Funkloch</span><span class="en">Fast on a weak signal</span></h3><p><span class="de">Die Seite ist eine einzige Datei ohne Baukasten-Ballast. Kein Werbenetzwerk, kein Mitlesen durch Dritte, keine zwanzig Anfragen an fremde Server, bevor der erste Satz erscheint.</span><span class="en">The site is a single file with no page-builder ballast. No ad network, no third-party observers, no twenty requests to foreign servers before the first sentence appears.</span></p></div>
+  </div>
+  <div class="de"><p class="note note--puls" style="margin-top:22px"><strong>Ein Detail, das täglich wirkt:</strong> Im Kopfbereich jeder Seite steht eine Live-Anzeige, ob Sie <em>gerade jetzt</em> geöffnet haben — berechnet aus Ihren echten Zeiten, inklusive der geteilten Schichten und des abweichenden Donnerstagabends. Das ist die häufigste Frage, die eine Praxis-Website beantworten muss, und die meisten beantworten sie nicht.</p></div>
+  <div class="en"><p class="note note--puls" style="margin-top:22px"><strong>One detail that works every day:</strong> the header of every page carries a live indicator of whether you are open <em>right now</em> — calculated from your real hours, including the split shifts and the different Thursday evening. That is the most common question a practice website has to answer, and most do not answer it.</p></div>
+</section>
+
+<!-- ============ 08 ============ -->
+<section id="s8">
+  <div class="shead"><span class="sn">08</span><h2><span class="de">Recht &amp; Datenschutz</span><span class="en">Law &amp; privacy</span></h2></div>
+  <div class="de"><p>Sie sind Heilberuflerin. Für Sie gelten strengere Regeln als für ein gewöhnliches Gewerbe — und Ihre Website ist der Ort, an dem sie am leichtesten verletzt werden. Was wir gebaut und was wir gefunden haben:</p></div>
+  <div class="en"><p>You are a licensed health professional. Stricter rules apply to you than to an ordinary business — and your website is where they are most easily breached. What we built, and what we found:</p></div>
+  <div class="tw">
+    <table>
+      <thead><tr>
+        <th><span class="de">Bereich</span><span class="en">Area</span></th>
+        <th><span class="de">Anforderung</span><span class="en">Requirement</span></th>
+        <th><span class="de">Umsetzung</span><span class="en">Implementation</span></th>
+        <th><span class="de">Stand</span><span class="en">Status</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td><b>Impressum</b><br><span class="mono" style="font-size:10.5px; color:var(--moss)">§ 5 DDG</span></td><td><span class="de">Vollständige Anbieterkennzeichnung, von jeder Seite mit einem Klick erreichbar</span><span class="en">Complete provider identification, one click from every page</span></td><td><span class="de">Im Fußbereich jeder Seite. Ihre Angaben sind vollständig: Aufsichtsbehörde, MPhG, Berufshaftpflicht.</span><span class="en">In the footer of every page. Your details are complete: supervisory authority, MPhG, professional liability.</span></td><td><span class="tag tag--ok"><span class="de">erledigt</span><span class="en">done</span></span></td></tr>
+        <tr><td><b><span class="de">Rechtsgrundlage</span><span class="en">Legal citation</span></b></td><td><span class="de">Das TMG wurde im Mai 2024 durch das DDG ersetzt</span><span class="en">The TMG was replaced by the DDG in May 2024</span></td><td><span class="de">Verweise auf „TMG“ in den Rechtstexten werden auf DDG aktualisiert.</span><span class="en">References to "TMG" in the legal texts will be updated to DDG.</span></td><td><span class="tag tag--warn"><span class="de">zu tun</span><span class="en">to do</span></span></td></tr>
+        <tr><td><b><span class="de">Gesundheitsdaten</span><span class="en">Health data</span></b><br><span class="mono" style="font-size:10.5px; color:var(--moss)">Art. 9 DSGVO</span></td><td><span class="de">Angaben zu Beschwerden sind besonders geschützt und brauchen eine eigene Rechtsgrundlage</span><span class="en">Details about symptoms are special-category data and need their own legal basis</span></td><td><span class="de">Das Kontaktformular fragt bewusst <em>nicht</em> nach Beschwerden — nur Name, E-Mail, Rückrufnummer. Datensparsamkeit statt Einwilligungstext.</span><span class="en">The contact form deliberately does <em>not</em> ask about symptoms — only name, email, callback number. Data minimisation instead of a consent wall.</span></td><td><span class="tag tag--ok"><span class="de">erledigt</span><span class="en">done</span></span></td></tr>
+        <tr><td><b>reCAPTCHA</b></td><td><span class="de">Google-Dienst; überträgt IP-Adresse und Verhalten in die USA</span><span class="en">Google service; transmits IP address and behaviour to the US</span></td><td><span class="de">Nicht eingebunden. Spam wird serverseitig abgewehrt (unsichtbares Honeypot-Feld, Zeitprüfung, Ratenbegrenzung) — ohne Drittanbieter.</span><span class="en">Not embedded. Spam is blocked server-side (invisible honeypot field, timing check, rate limit) — with no third party.</span></td><td><span class="tag tag--warn"><span class="de">Textzeile prüfen</span><span class="en">check one line</span></span></td></tr>
+        <tr><td><b><span class="de">Schriften</span><span class="en">Web fonts</span></b></td><td><span class="de">Google Fonts vom Google-Server überträgt die IP-Adresse jedes Besuchers ohne Einwilligung</span><span class="en">Google Fonts loaded from Google transmits every visitor's IP without consent</span></td><td><span class="de">Alle drei Schriften werden auf Ihren Server gelegt und von dort ausgeliefert.</span><span class="en">All three typefaces are placed on your own server and served from there.</span></td><td><span class="tag tag--ok"><span class="de">erledigt</span><span class="en">done</span></span></td></tr>
+        <tr><td><b>Cookies</b><br><span class="mono" style="font-size:10.5px; color:var(--moss)">§ 25 TTDSG</span></td><td><span class="de">Alles, was nicht technisch notwendig ist, braucht vorherige Einwilligung. Ablehnen muss so leicht sein wie Annehmen.</span><span class="en">Anything not strictly necessary needs prior consent. Rejecting must be as easy as accepting.</span></td><td><span class="de">Hängt an Ihrer Entscheidung zur Statistik — siehe Abschnitt 10. Ohne Statistik entfällt das Banner vollständig.</span><span class="en">Depends on your analytics decision — see section 10. With no analytics, the banner disappears entirely.</span></td><td><span class="tag tag--klinik"><span class="de">Ihre Wahl</span><span class="en">your call</span></span></td></tr>
+        <tr><td><b><span class="de">Karten &amp; Videos</span><span class="en">Maps &amp; video</span></b></td><td><span class="de">Google Maps oder YouTube laden Fremdinhalte, sobald die Seite öffnet</span><span class="en">Google Maps or YouTube load third-party content the moment the page opens</span></td><td><span class="de">Statisches Kartenbild mit Link zur Route. Kein Fremdinhalt lädt ungefragt.</span><span class="en">A static map image with a link to directions. No third-party content loads unasked.</span></td><td><span class="tag tag--ok"><span class="de">erledigt</span><span class="en">done</span></span></td></tr>
+        <tr><td><b><span class="de">Heilmittelwerbung</span><span class="en">Health advertising</span></b><br><span class="mono" style="font-size:10.5px; color:var(--moss)">HWG</span></td><td><span class="de">Keine Heilversprechen, keine Vorher-Nachher-Bilder, keine Erfolgsberichte von Patienten</span><span class="en">No promises of cure, no before/after imagery, no patient success stories</span></td><td><span class="de">Ihre Texte sind bereits sachlich formuliert. Wir haben keine Wirkversprechen ergänzt und keine Testimonials eingebaut.</span><span class="en">Your texts are already factual. We added no efficacy claims and built in no testimonials.</span></td><td><span class="tag tag--ok"><span class="de">erledigt</span><span class="en">done</span></span></td></tr>
+        <tr><td><b><span class="de">Barrierefreiheit</span><span class="en">Accessibility</span></b><br><span class="mono" style="font-size:10.5px; color:var(--moss)">BFSG / WCAG 2.1 AA</span></td><td><span class="de">Seit 28.06.2025 verpflichtend für bestimmte Angebote; für Sie eher Sorgfaltsmaßstab als Pflicht</span><span class="en">Mandatory for certain services since 28 June 2025; for you a standard of care rather than a duty</span></td><td><span class="de">Wir bauen nach WCAG 2.1 AA, unabhängig davon. Messwerte in Abschnitt 04.</span><span class="en">We build to WCAG 2.1 AA regardless. Measurements in section 04.</span></td><td><span class="tag tag--ok"><span class="de">erledigt</span><span class="en">done</span></span></td></tr>
+        <tr><td><b><span class="de">Übertragung</span><span class="en">Transport</span></b></td><td><span class="de">Verschlüsselung, Schutzköpfe gegen fremde Einbettung und Skripte</span><span class="en">Encryption, protective headers against foreign embedding and scripts</span></td><td><span class="de">TLS erzwungen (HSTS), dazu CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy.</span><span class="en">Enforced TLS (HSTS), plus CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy.</span></td><td><span class="tag tag--klinik"><span class="de">mit Hosting</span><span class="en">with hosting</span></span></td></tr>
+        <tr><td><b><span class="de">Datenschutzerklärung</span><span class="en">Privacy policy</span></b><br><span class="mono" style="font-size:10.5px; color:var(--moss)">Art. 13 DSGVO</span></td><td><span class="de">Muss beschreiben, was die Seite <em>tatsächlich</em> tut</span><span class="en">Must describe what the site <em>actually</em> does</span></td><td><span class="de">Ihre jetzige Erklärung beschreibt auf 43 742 Zeichen vor allem Facebook, Instagram und Google Analytics. Die neue Seite nutzt nichts davon. Wir schreiben sie passend zur neuen Seite neu — kürzer und wahr.</span><span class="en">Your current policy spends 43,742 characters mostly on Facebook, Instagram and Google Analytics. The new site uses none of them. We rewrite it to match — shorter, and true.</span></td><td><span class="tag tag--warn"><span class="de">zu tun</span><span class="en">to do</span></span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="de">
+    <p class="note note--risk"><strong>Zwei offene Punkte, die wir Ihnen nicht verschweigen.</strong><br>
+    <strong>Erstens — inzwischen behoben:</strong> Der Entwurf lud die Schriften anfangs von Google. Das ist genau der Punkt, für den das Landgericht München I einer Besucherin Schadensersatz zugesprochen hat (Urteil vom 20.01.2022, Az. 3 O 17493/20). Die Schriftdateien liegen jetzt auf Ihrem eigenen Server. Die Website ruft damit <strong>keinen einzigen fremden Server</strong> mehr auf.<br>
+    <strong>Zweitens:</strong> Auf der Kontaktseite steht der Satz „Diese Website ist durch reCAPTCHA … geschützt.“ Wir binden reCAPTCHA nicht ein — der Satz wäre also falsch. Wir haben ihn nicht eigenmächtig gelöscht, weil wir an keinem Ihrer Texte etwas ändern, ohne zu fragen. Bitte geben Sie uns dafür kurz frei.</p>
+    <p class="note"><strong>Und eine ehrliche Einordnung:</strong> Wir sind Gestalter und Entwickler, keine Rechtsanwälte. Wir bauen die Seite so, dass sie die oben genannten Anforderungen erfüllt, und wir liefern die Texte für Impressum und Datenschutzerklärung als Entwurf. Die abschließende rechtliche Prüfung sollte Ihre Kanzlei oder Ihr Datenschutzbeauftragter übernehmen. Das ist kein Rückzieher, sondern die übliche Arbeitsteilung.</p>
+  </div>
+  <div class="en">
+    <p class="note note--risk"><strong>Two open items we are not hiding from you.</strong><br>
+    <strong>First — now fixed:</strong> the draft initially loaded its fonts from Google. That is precisely the point on which the Munich Regional Court I awarded damages to a website visitor (judgment of 20 January 2022, case 3 O 17493/20). The font files now sit on your own server. The website no longer calls <strong>a single</strong> third-party server.<br>
+    <strong>Second:</strong> the contact page carries the sentence "This website is protected by reCAPTCHA …". We do not embed reCAPTCHA, so the sentence would be untrue. We did not delete it on our own initiative, because we change none of your texts without asking. Please give us a brief go-ahead.</p>
+    <p class="note"><strong>And an honest framing:</strong> we are designers and developers, not lawyers. We build the site to meet the requirements above and we supply draft texts for the imprint and privacy policy. The final legal review should sit with your solicitor or data protection officer. That is not a hedge — it is the normal division of labour.</p>
+  </div>
+</section>
+<!-- ============ 09 ============ -->
+<section id="s9">
+  <div class="shead"><span class="sn">09</span><h2><span class="de">Technik &amp; Hosting</span><span class="en">Tech &amp; hosting</span></h2></div>
+  <div class="de">
+    <p>Die neue Seite ist eine einzelne HTML-Datei mit eigenem Stylesheet und eigenem Skript. Kein WordPress, kein Baukasten, keine Datenbank, keine Plugins.</p>
+    <p>Das klingt altmodisch und ist genau deshalb die richtige Wahl für eine Praxis: Es gibt nichts, was wöchentlich aktualisiert werden muss, nichts, was gehackt werden kann, und keine monatliche Lizenz. Eine WordPress-Installation mit acht Plugins ist für eine Seite dieser Größe ein Wartungsvertrag, den Sie nicht brauchen.</p>
+  </div>
+  <div class="en">
+    <p>The new site is a single HTML file with its own stylesheet and its own script. No WordPress, no page builder, no database, no plugins.</p>
+    <p>That sounds old-fashioned, and it is precisely why it is the right choice for a practice: there is nothing that needs weekly updating, nothing that can be hacked, and no monthly licence. A WordPress install with eight plugins is, for a site this size, a maintenance contract you do not need.</p>
+  </div>
+  <div class="grid g3">
+    <div class="panel"><h4><span class="de">Angriffsfläche</span><span class="en">Attack surface</span></h4><p style="font-size:14.5px; margin:6px 0 0"><span class="de">Keine Datenbank, kein Login, kein Redaktionssystem. Es gibt schlicht nichts zu übernehmen.</span><span class="en">No database, no login, no CMS. There is simply nothing to take over.</span></p></div>
+    <div class="panel"><h4><span class="de">Pflegeaufwand</span><span class="en">Maintenance</span></h4><p style="font-size:14.5px; margin:6px 0 0"><span class="de">Keine Sicherheitsupdates, keine Versionskonflikte. Texte und Kurszeiten ändern wir auf Zuruf.</span><span class="en">No security updates, no version conflicts. We change texts and course times on request.</span></p></div>
+    <div class="panel"><h4><span class="de">Geschwindigkeit</span><span class="en">Speed</span></h4><p style="font-size:14.5px; margin:6px 0 0"><span class="de">Eine Datei, Bilder in moderner Kompression. Kein Aufbau-Ruckeln, keine Fremdanfragen.</span><span class="en">One file, images in modern compression. No layout jump, no third-party requests.</span></p></div>
+    <div class="panel"><h4><span class="de">Umzugsfähig</span><span class="en">Portable</span></h4><p style="font-size:14.5px; margin:6px 0 0"><span class="de">Die Seite liegt als Dateien vor. Jeder Anbieter der Welt kann sie hosten — Sie sind an niemanden gebunden, auch nicht an uns.</span><span class="en">The site exists as plain files. Any host in the world can serve it — you are tied to nobody, including us.</span></p></div>
+    <div class="panel"><h4><span class="de">Auffindbarkeit</span><span class="en">Findability</span></h4><p style="font-size:14.5px; margin:6px 0 0"><span class="de">Eigener Titel und eigene Beschreibung je Seite, strukturierte Daten für Praxis, Adresse und Öffnungszeiten.</span><span class="en">Its own title and description per page, structured data for practice, address and opening hours.</span></p></div>
+    <div class="panel"><h4><span class="de">Sicherung</span><span class="en">Backup</span></h4><p style="font-size:14.5px; margin:6px 0 0"><span class="de">Vollständige Versionsgeschichte. Jeder frühere Stand lässt sich in Minuten wiederherstellen.</span><span class="en">Complete version history. Any earlier state can be restored in minutes.</span></p></div>
+  </div>
+
+  <div class="sub"><h3><span class="de">Wo soll die Seite liegen?</span><span class="en">Where should the site live?</span></h3></div>
+  <div class="de"><p>Das ist noch offen und sollte bewusst entschieden werden — beim Hosting entscheidet sich, wohin die IP-Adressen Ihrer Besucher fließen. Die Server-Protokolle sind personenbezogene Daten, auch wenn niemand ein Formular ausfüllt.</p></div>
+  <div class="en"><p>This is still open and deserves a conscious decision — hosting determines where your visitors' IP addresses go. Server logs are personal data even when nobody fills in a form.</p></div>
+  <div class="tw">
+    <table>
+      <thead><tr>
+        <th><span class="de">Möglichkeit</span><span class="en">Option</span></th>
+        <th><span class="de">Datenschutz</span><span class="en">Data protection</span></th>
+        <th><span class="de">Aufwand</span><span class="en">Effort</span></th>
+        <th class="n"><span class="de">Kosten / Monat</span><span class="en">Cost / month</span></th>
+      </tr></thead>
+      <tbody>
+        <tr style="background:var(--puls-wash)"><td><b><span class="de">Deutscher Anbieter mit AV-Vertrag</span><span class="en">German host with a DPA</span></b><br><span style="font-size:13px; color:var(--ink-2)">Hetzner · IONOS · netcup · Mittwald</span></td><td><span class="de">Rechenzentrum in Deutschland, Auftragsverarbeitungsvertrag, keine Drittlandübermittlung. Rechtlich der klarste Fall.</span><span class="en">Data centre in Germany, data processing agreement, no third-country transfer. Legally the cleanest case.</span></td><td><span class="de">Einmalig einrichten, dann nichts</span><span class="en">Set up once, then nothing</span></td><td class="n">4–12 €</td></tr>
+        <tr><td><b><span class="de">Bei GoDaddy bleiben</span><span class="en">Stay with GoDaddy</span></b></td><td><span class="de">US-Konzern. Übermittlung in ein Drittland muss begründet und dokumentiert werden. Machbar, aber Sie tragen die Begründungslast.</span><span class="en">US corporation. A third-country transfer must be justified and documented. Workable, but the burden of justification is yours.</span></td><td><span class="de">Kein Wechsel nötig</span><span class="en">No migration needed</span></td><td class="n">~10–20 €</td></tr>
+        <tr><td><b>Netlify · Vercel · Cloudflare</b></td><td><span class="de">Technisch bequem, aber US-Anbieter. Zusätzliche Dokumentation zum Datentransfer nötig.</span><span class="en">Technically convenient, but US providers. Additional transfer documentation required.</span></td><td><span class="de">Sehr gering</span><span class="en">Very low</span></td><td class="n">0–20 €</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="de"><p class="note note--puls"><strong>Unsere Empfehlung: ein deutsches Webhosting-Paket mit AV-Vertrag.</strong> Für eine Seite aus statischen Dateien reicht das kleinste Paket. Sie sparen gegenüber GoDaddy vermutlich Geld, die Seite wird schneller, und die schwierigste Frage einer Datenschutzprüfung — „wohin fließen die Daten?“ — beantwortet sich mit einem Satz. Den AV-Vertrag holen wir ein und legen ihn Ihnen zur Unterschrift vor.</p></div>
+  <div class="en"><p class="note note--puls"><strong>Our recommendation: a German hosting package with a data processing agreement.</strong> For a site of static files, the smallest plan is enough. You will probably pay less than with GoDaddy, the site gets faster, and the hardest question in any privacy audit — "where does the data go?" — is answered in one sentence. We obtain the agreement and put it in front of you for signature.</p></div>
+</section>
+
+<!-- ============ 10 ============ -->
+<section id="s10">
+  <div class="shead"><span class="sn">10</span><h2><span class="de">Ihre Entscheidungen</span><span class="en">Your decisions</span></h2></div>
+  <div class="de"><p>Vier Dinge können wir nicht für Sie entscheiden. Sie kosten Sie zusammen etwa zehn Minuten, und danach können wir bauen.</p></div>
+  <div class="en"><p>Four things we cannot decide for you. Together they will take about ten minutes, and then we can build.</p></div>
+
+  <div class="sub"><h3><span class="de">A · Besucherstatistik — und damit: Cookie-Banner ja oder nein</span><span class="en">A · Analytics — and therefore: cookie banner or not</span></h3></div>
+  <div class="tw">
+    <table>
+      <thead><tr>
+        <th><span class="de">Möglichkeit</span><span class="en">Option</span></th>
+        <th><span class="de">Was Sie sehen</span><span class="en">What you see</span></th>
+        <th><span class="de">Banner nötig?</span><span class="en">Banner needed?</span></th>
+        <th><span class="de">Rechtlicher Aufwand</span><span class="en">Legal burden</span></th>
+      </tr></thead>
+      <tbody>
+        <tr style="background:var(--puls-wash)"><td><b><span class="de">Gar keine Messung</span><span class="en">No measurement at all</span></b></td><td><span class="de">Nichts. Sie erfahren über Anrufe und Probetrainings, ob die Seite wirkt.</span><span class="en">Nothing. You learn from calls and trial sessions whether the site works.</span></td><td><span class="tag tag--ok"><span class="de">nein</span><span class="en">no</span></span></td><td><span class="de">Praktisch keiner. Kein Banner, keine Einwilligung, kürzeste Datenschutzerklärung.</span><span class="en">Effectively none. No banner, no consent, shortest possible policy.</span></td></tr>
+        <tr><td><b><span class="de">Eigene, cookiefreie Messung</span><span class="en">Self-hosted, cookieless</span></b><br><span style="font-size:13px; color:var(--ink-2)">Matomo · Plausible</span></td><td><span class="de">Besucherzahlen, beliebte Seiten, Herkunft. Läuft auf Ihrem Server, IP-Adressen gekürzt.</span><span class="en">Visitor numbers, popular pages, referrers. Runs on your server, IPs truncated.</span></td><td><span class="tag tag--warn"><span class="de">meist nein</span><span class="en">usually no</span></span></td><td><span class="de">Gering, aber begründungsbedürftig. Ca. 5 € / Monat oder Selbstbetrieb.</span><span class="en">Low, but needs documented justification. About €5/month, or self-run.</span></td></tr>
+        <tr><td><b>Google Analytics</b></td><td><span class="de">Sehr viel — mehr, als eine Praxis auswertet.</span><span class="en">A great deal — more than a practice will ever act on.</span></td><td><span class="tag tag--risk"><span class="de">ja, zwingend</span><span class="en">yes, mandatory</span></span></td><td><span class="de">Hoch: echtes Einwilligungsbanner mit Vorab-Blockierung, Drittlanddokumentation, langsamere Seite.</span><span class="en">High: a real consent banner with prior blocking, transfer documentation, a slower site.</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="de"><p class="note note--puls"><strong>Unsere Empfehlung: gar keine Messung — zumindest zum Start.</strong> Damit verschwindet das Cookie-Banner, das heute jeden Besucher als Erstes begrüßt. Für eine Praxis, deren wichtigste Kennzahl das Telefon ist, wiegt eine Seite ohne Zustimmungshürde mehr als eine Statistik, die niemand liest. Nachrüsten können wir jederzeit.</p></div>
+  <div class="en"><p class="note note--puls"><strong>Our recommendation: no measurement at all — at least at launch.</strong> That removes the cookie banner which today greets every visitor first. For a practice whose most important metric is the telephone, a site with no consent hurdle is worth more than statistics nobody reads. We can add it later at any time.</p></div>
+
+  <div class="sub"><h3><span class="de">B · Die drei kleineren Punkte</span><span class="en">B · The three smaller items</span></h3></div>
+  <div class="grid g3">
+    <div class="panel"><h4>B1 · Hosting</h4><p style="font-size:14.5px; margin:6px 0 0"><span class="de">Wechseln wir zu einem deutschen Anbieter oder bleiben Sie bei GoDaddy? Siehe Abschnitt 09.</span><span class="en">Do we move to a German host or stay with GoDaddy? See section 09.</span></p></div>
+    <div class="panel"><h4>B2 · <span class="de">reCAPTCHA-Satz</span><span class="en">reCAPTCHA sentence</span></h4><p style="font-size:14.5px; margin:6px 0 0"><span class="de">Dürfen wir die eine unzutreffende Zeile auf der Kontaktseite streichen? Es ist die einzige Textänderung, um die wir bitten.</span><span class="en">May we delete the one inaccurate line on the contact page? It is the only text change we are asking for.</span></p></div>
+    <div class="panel"><h4>B3 · <span class="de">Fehlende Kurstexte</span><span class="en">Missing course texts</span></h4><p style="font-size:14.5px; margin:6px 0 0"><span class="de">Fünf Kursarten im Plan haben keine Beschreibung. Schreiben Sie sie, oder sollen wir nach einem Gespräch mit Ihren Trainern einen Entwurf liefern?</span><span class="en">Five course types in the plan have no description. Will you write them, or shall we draft them after speaking with your trainers?</span></p></div>
+  </div>
+
+  <div class="sub"><h3><span class="de">Was wir mitbringen, sobald Sie entschieden haben</span><span class="en">What we bring once you have decided</span></h3></div>
+  <div class="de">
+    <ul>
+      <li>Die acht Seiten fertig gebaut, mit allen Weiterleitungen von den alten Adressen</li>
+      <li>Die sechs Bausteine oben, eingebaut und mit Ihren echten Daten befüllt</li>
+      <li>Schriften auf Ihrem Server, Sicherheitsköpfe gesetzt, Verschlüsselung erzwungen</li>
+      <li>Impressum und Datenschutzerklärung als Entwurf, passend zur tatsächlichen Technik</li>
+      <li>Den Hallenplan maßstäblich — sobald wir Ihre Fotos und Maße haben</li>
+      <li>Eine kurze Einweisung, wie Sie Kurszeiten und Stellenanzeigen ändern lassen</li>
+    </ul>
+  </div>
+  <div class="en">
+    <ul>
+      <li>The eight pages built, with every redirect from the old addresses in place</li>
+      <li>The six modules above, integrated and filled with your real data</li>
+      <li>Fonts on your server, security headers set, encryption enforced</li>
+      <li>Draft imprint and privacy policy, matching what the site actually does</li>
+      <li>The floor plan drawn to scale — as soon as we have your photos and dimensions</li>
+      <li>A short handover on how to get course times and job postings changed</li>
+    </ul>
+  </div>
+</section>
+    </main>
+  </div>
+</div>
+
+<footer class="foot">
+  <div class="shell">
+    <div class="grid g3">
+      <div>
+        <h4><span class="de">Was Sie gerade gelesen haben</span><span class="en">What you have just read</span></h4>
+        <p><span class="de">Ein Konzeptdokument, kein Vertrag. Alle Zahlen darin sind gemessen, nicht geschätzt — außer den ausdrücklich als Platzhalter gekennzeichneten.</span><span class="en">A concept document, not a contract. Every figure in it is measured rather than estimated — except those explicitly marked as placeholders.</span></p>
+      </div>
+      <div>
+        <h4>Vitalzentrum Eschweiler</h4>
+        <p>Grünstraße 23 · 52249 Eschweiler-Dürwiß<br>
+        <span class="mono">+49 2403 - 749 93 99</span></p>
+      </div>
+      <div>
+        <h4><span class="de">Zu dieser Seite</span><span class="en">About this page</span></h4>
+        <p><span class="de">Gesetzt in Archivo, Source Serif 4 und IBM Plex Mono. Diese Vorschauseite lädt die Schriften noch von Google; die ausgelieferte Website wird sie von Ihrem eigenen Server laden — siehe Abschnitt 08.</span><span class="en">Set in Archivo, Source Serif 4 and IBM Plex Mono. This preview page still loads its fonts from Google; the delivered website will serve them from your own server — see section 08.</span></p>
+      </div>
+    </div>
+    <div class="foot__bar">
+      <span class="de">Konzept &amp; Umsetzung · Stand 10. September 2026</span><span class="en">Concept &amp; build · as of 10 September 2026</span>
+      <span class="de">16 Seiten → 8 · 6 Bausteine · 4 offene Entscheidungen</span><span class="en">16 pages → 8 · 6 modules · 4 open decisions</span>
+    </div>
+  </div>
+</footer>
+<script>
+(function () {
+  'use strict';
+  var root = document.documentElement;
+  var LANG = 'de';
+  function t(o) { return o[LANG]; }
+  function $(s, c) { return (c || document).querySelector(s); }
+  function $$(s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); }
+  function nf(n, d) { return n.toLocaleString(LANG === 'de' ? 'de-DE' : 'en-GB', { minimumFractionDigits: d, maximumFractionDigits: d }); }
+  var renderers = [];
+
+  /* ---------- language ---------- */
+  function setLang(l) {
+    LANG = l;
+    root.setAttribute('data-lang', l);
+    root.setAttribute('lang', l);
+    $('#lang-de').setAttribute('aria-pressed', String(l === 'de'));
+    $('#lang-en').setAttribute('aria-pressed', String(l === 'en'));
+    renderers.forEach(function (f) { f(); });
+  }
+  $('#lang-de').addEventListener('click', function () { setLang('de'); });
+  $('#lang-en').addEventListener('click', function () { setLang('en'); });
+
+  /* ---------- theme ---------- */
+  var themeBtn = $('#theme');
+  function themeLabel() {
+    var dark = root.getAttribute('data-theme') === 'dark' ||
+      (!root.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    themeBtn.textContent = LANG === 'de' ? (dark ? 'Hell' : 'Dunkel') : (dark ? 'Light' : 'Dark');
+  }
+  themeBtn.addEventListener('click', function () {
+    var dark = root.getAttribute('data-theme') === 'dark' ||
+      (!root.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    root.setAttribute('data-theme', dark ? 'light' : 'dark');
+    themeLabel();
+  });
+  renderers.push(themeLabel);
+
+  /* ---------- topbar + rail ---------- */
+  var bar = $('#topbar');
+  window.addEventListener('scroll', function () {
+    bar.classList.toggle('is-stuck', window.scrollY > 8);
+  }, { passive: true });
+  var railLinks = {};
+  $$('.rail a').forEach(function (a) { railLinks[a.getAttribute('href').slice(1)] = a; });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        var a = railLinks[e.target.id];
+        if (a && e.isIntersecting) {
+          $$('.rail a').forEach(function (x) { x.classList.remove('is-here'); });
+          a.classList.add('is-here');
+        }
+      });
+    }, { rootMargin: '-72px 0px -70% 0px' });
+    $$('section[id]').forEach(function (s) { io.observe(s); });
+  }
+
+  /* ---------- 03 IA diagram ---------- */
+  var groups = $$('.ia__group');
+  var oldItems = $$('#ia-old .ia__item');
+  function lightIA(g) {
+    groups.forEach(function (b) { b.classList.toggle('is-on', b.dataset.g === g); });
+    oldItems.forEach(function (it) {
+      it.classList.toggle('is-lit', it.dataset.k === g);
+      it.classList.toggle('is-drop', g !== null && it.dataset.k !== g);
+    });
+  }
+  groups.forEach(function (b) {
+    b.addEventListener('click', function () {
+      lightIA(b.classList.contains('is-on') ? null : b.dataset.g);
+    });
+  });
+  lightIA('training');
+
+  /* ---------- 06/1 dosage ring ---------- */
+  var STATIONS = [
+    { de: ['Beinpresse', 'Öffnet den Zirkel. Große Muskelgruppen zuerst — das Gerät stellt Sitz und Widerstand selbst ein.'], en: ['Leg press', 'Opens the circuit. Large muscle groups first — the machine sets seat and resistance itself.'] },
+    { de: ['Bauch', 'Rumpfmuskulatur. Belastet konzentrisch und exzentrisch, also auf Hin- und Rückweg.'], en: ['Abdominals', 'Core musculature. Loaded concentrically and eccentrically — on the way out and the way back.'] },
+    { de: ['Rückenstrecker', 'Der Grund, warum viele überhaupt kommen: Rücken- und Gelenkbeschwerden.'], en: ['Back extension', 'The reason many people come at all: back and joint complaints.'] },
+    { de: ['Brustpresse', 'Geführte Bewegung. Kein Ausweichen, kein falscher Winkel, kein Trainingspartner nötig.'], en: ['Chest press', 'Guided movement. No evasion, no wrong angle, no training partner needed.'] },
+    { de: ['Latzug', 'Zugbewegung als Gegenspieler zur Brustpresse. Hält die Schulter im Gleichgewicht.'], en: ['Lat pulldown', 'A pulling movement to counter the chest press. Keeps the shoulder in balance.'] },
+    { de: ['Schulterpresse', 'Schliesst den Durchgang. Danach beginnt die zweite von drei Runden.'], en: ['Shoulder press', 'Closes the round. Then the second of three rounds begins.'] }
+  ];
+  var C = 2 * Math.PI * 88, SEG = C / 6, curStation = 0, curWeek = 2;
+  var segG = $('#ring-segs');
+  STATIONS.forEach(function (s, i) {
+    var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.setAttribute('class', 'dose__seg');
+    g.setAttribute('tabindex', '0');
+    g.setAttribute('role', 'button');
+    ['dose__arc', 'dose__hit'].forEach(function (cls) {
+      var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      c.setAttribute('cx', '120'); c.setAttribute('cy', '120'); c.setAttribute('r', '88');
+      c.setAttribute('class', cls);
+      c.setAttribute('transform', 'rotate(-90 120 120)');
+      c.setAttribute('stroke-dasharray', (SEG - 7) + ' ' + (C - SEG + 7));
+      c.setAttribute('stroke-dashoffset', String(-(i * SEG + 3.5)));
+      if (cls === 'dose__arc') c.setAttribute('stroke', 'var(--line)');
+      g.appendChild(c);
+    });
+    function pick() { curStation = i; drawRing(); }
+    g.addEventListener('click', pick);
+    g.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
+    segG.appendChild(g);
+  });
+  function drawRing() {
+    $$('.dose__seg .dose__arc', segG).forEach(function (c, i) {
+      c.setAttribute('stroke', i === curStation ? 'var(--puls)' : 'var(--line)');
+    });
+    var s = t(STATIONS[curStation]);
+    $('#ring-info').innerHTML = '<b>' + (curStation + 1) + ' · ' + s[0] + '</b><p>' + s[1] + '</p>';
+    var wk = 33 * curWeek;
+    $('#ring-week').textContent = wk + ' min';
+    $('#ring-month').textContent = nf(wk * 52 / 12 / 60, 1) + ' h';
+    $('#ring-pct').textContent = nf(wk / 10080 * 100, 1) + ' %';
+    $('#ring-unit').textContent = LANG === 'de' ? 'Minuten / Einheit' : 'minutes / session';
+    $('#ring-sub').textContent = LANG === 'de' ? '3 Durchgänge à 11 min' : '3 rounds of 11 min';
+  }
+  $$('[data-week]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      $$('[data-week]').forEach(function (x) { x.classList.remove('is-on'); });
+      b.classList.add('is-on');
+      curWeek = +b.dataset.week;
+      drawRing();
+    });
+  });
+  renderers.push(drawRing);
+
+  /* ---------- 06/2 floor plan ---------- */
+  var ZONES = {
+    milon: {
+      de: ['Milon-Zirkel', 'Zirkel', ['6 elektronisch gesteuerte Geräte', 'Ein Durchgang 11 Minuten, eine Einheit ca. 33 Minuten', 'Chipkarte stellt Sitz und Gewicht automatisch ein', 'Für Anfänger bis Leistungssportler']],
+      en: ['Milon circuit', 'Circuit', ['6 electronically controlled machines', 'One round 11 minutes, one session about 33 minutes', 'A chip card sets seat and weight automatically', 'From beginners to competitive athletes']]
+    },
+    frei: {
+      de: ['Frei-medical', 'Therapie', ['Zugelassen für Krankengymnastik am Gerät', 'Feine Steuerung von Widerstand, Winkel, Geschwindigkeit', 'Biofeedback, Fortschritte vergleichbar über Zeit', 'Brücke zwischen Praxis und Studio']],
+      en: ['Frei-medical', 'Therapy', ['Approved for medical device training', 'Fine control of resistance, angle, speed', 'Biofeedback, progress comparable over time', 'The bridge between practice and gym']]
+    },
+    frei2: {
+      de: ['Freifläche', 'Frei', ['Sprossenwand — Kraft, Beweglichkeit, Koordination', 'Seilzug — kontrolliertes, isoliertes Krafttraining', 'Bodentraining — Bänder, Kurzhanteln, eigenes Gewicht', 'Auch zur Mobilisierung nach Verletzungen']],
+      en: ['Open floor', 'Free', ['Wall bars — strength, mobility, coordination', 'Cable machine — controlled, isolated strength work', 'Floor work — bands, dumbbells, bodyweight', 'Also for mobilisation after injury']]
+    },
+    atletica: {
+      de: ['Atletica-Kraftbereich', 'Kraft', ['Multipresse mit Sicherheits-Haken — Training ohne Partner', 'Geführte Grundübungen: Bankdrücken, Kniebeuge, Schulterdrücken', 'Kabelzug und Dip-Griffe am selben Gerät', 'Hantelbänke für freie Gewichte']],
+      en: ['Atletica strength area', 'Strength', ['Multi-press with safety hooks — training without a spotter', 'Guided basics: bench press, squat, shoulder press', 'Cable pulley and dip handles on the same frame', 'Benches for free weights']]
+    },
+    kursraum: {
+      de: ['Kursraum', 'Gruppe', ['18 Termine pro Woche', 'Rückenschule, Pilates, Tai Chi, Yin Yoga, Hockergymnastik', 'Reha-Sport des Regiosportbunds, 4× wöchentlich', 'Gardetraining und Seniorensport']],
+      en: ['Course room', 'Group', ['18 slots per week', 'Back school, Pilates, Tai Chi, Yin Yoga, chair gymnastics', 'Regiosportbund Reha-Sport, four times a week', 'Guard training and senior sport']]
+    },
+    praxis: {
+      de: ['Physiopraxis Berndt', 'Praxis', ['Seit über 12 Jahren in Dürwiß', 'Behandlungsräume nach neuestem Standard', 'Krankengymnastik, Fango, therapeutische Maßnahmen', 'Orthopädische und neurologische Erkrankungen']],
+      en: ['Berndt physiotherapy', 'Practice', ['More than 12 years in Dürwiß', 'Treatment rooms to current standards', 'Physiotherapy, fango, therapeutic measures', 'Orthopaedic and neurological conditions']]
+    },
+    empfang: {
+      de: ['Empfang', 'Service', ['Erste Beratung und Probetraining', 'Fragen zu Mitgliedschaft und Kassenförderung', 'Auch telefonisch: +49 2403 - 749 93 99']],
+      en: ['Reception', 'Service', ['First consultation and trial session', 'Questions on membership and insurer subsidies', 'Also by phone: +49 2403 - 749 93 99']]
+    },
+    umkleide: {
+      de: ['Umkleiden', 'Service', ['Umkleiden und Duschen', 'Maßgaben und Ausstattung bitte ergänzen']],
+      en: ['Changing rooms', 'Service', ['Changing rooms and showers', 'Details and fittings to be supplied']]
+    }
+  };
+  var curZone = 'milon';
+  function drawPlan() {
+    $$('.zone').forEach(function (z) { z.classList.toggle('is-on', z.dataset.z === curZone); });
+    var d = t(ZONES[curZone]);
+    $('#plan-info').innerHTML = '<h3>' + d[0] + '</h3><span class="tag tag--ok">' + d[1] + '</span><ul>' +
+      d[2].map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>';
+  }
+  $$('.zone').forEach(function (z) {
+    function pick() { curZone = z.dataset.z; drawPlan(); }
+    z.addEventListener('click', pick);
+    z.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
+  });
+  renderers.push(drawPlan);
+
+  /* ---------- 06/3 rehasport ---------- */
+  var dotsEl = $('#reha-dots');
+  for (var i = 0; i < 50; i++) {
+    var d = document.createElement('span');
+    d.className = 'reha__dot';
+    dotsEl.appendChild(d);
+  }
+  var dots = $$('.reha__dot', dotsEl);
+  function drawReha() {
+    var freq = +$('#reha-freq').value;
+    var start = new Date($('#reha-date').value || '2026-09-14');
+    if (isNaN(start)) start = new Date();
+    var expiry = new Date(start.getTime());
+    expiry.setMonth(expiry.getMonth() + 18);
+    var weeksNeeded = Math.ceil(50 / freq);
+    var end = new Date(start.getTime() + weeksNeeded * 7 * 86400000);
+    var weeksAvail = Math.floor((expiry - start) / (7 * 86400000));
+    var doable = Math.min(50, weeksAvail * freq);
+    var fmt = function (dt) { return dt.toLocaleDateString(LANG === 'de' ? 'de-DE' : 'en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }); };
+    dots.forEach(function (el, n) {
+      el.classList.toggle('is-used', n < doable);
+      el.classList.toggle('is-over', n >= doable);
+    });
+    $('#reha-lab').textContent = (LANG === 'de' ? 'Einheiten pro Woche: ' : 'Sessions per week: ') + freq;
+    $('#reha-weeks').textContent = weeksNeeded + (LANG === 'de' ? ' Wochen' : ' weeks');
+    $('#reha-end').textContent = fmt(end);
+    $('#reha-exp').textContent = fmt(expiry);
+    var buffer = weeksAvail - weeksNeeded;
+    $('#reha-buf').textContent = buffer + (LANG === 'de' ? ' Wochen' : ' weeks');
+    $('#reha-note').innerHTML = LANG === 'de'
+      ? '<strong>Lesart:</strong> Bei ' + freq + ' Einheit' + (freq > 1 ? 'en' : '') + ' pro Woche sind die 50 Einheiten nach ' + weeksNeeded +
+        ' Wochen aufgebraucht — ' + buffer + ' Wochen vor Ablauf der Verordnung. So viele Wochen dürfen Sie also ausfallen lassen, ohne Einheiten zu verlieren. Reha-Sport läuft bei Ihnen montags 17:30, mittwochs 18:00 und 19:00 sowie freitags 11:00 — zwei Termine pro Woche sind damit ohne Weiteres machbar.'
+      : '<strong>How to read this:</strong> at ' + freq + ' session' + (freq > 1 ? 's' : '') + ' per week the 50 sessions are used up after ' + weeksNeeded +
+        ' weeks — ' + buffer + ' weeks before the prescription expires. That is how many weeks you can miss without losing sessions. Your Reha-Sport runs Monday 17:30, Wednesday 18:00 and 19:00, and Friday 11:00 — so two sessions a week is comfortably achievable.';
+  }
+  $('#reha-freq').addEventListener('input', drawReha);
+  $('#reha-date').addEventListener('change', drawReha);
+  renderers.push(drawReha);
+
+  /* ---------- 06/4 course grid ---------- */
+  var DAYS = [
+    { de: 'Montag', en: 'Monday', s: [['10:15', 'Fit & Fun', 'ausdauer', 1], ['16:15', 'Gardetraining', 'ausdauer', 1], ['17:30', 'Reha-Sport', 'reha', 0], ['19:00', 'Tai Chi', 'entspannung', 0]] },
+    { de: 'Dienstag', en: 'Tuesday', s: [['16:00', 'Hockergymnastik', 'praevention', 0], ['17:00', 'Rückenschule', 'praevention', 0], ['18:00', 'Pilates Anfänger', 'pilates', 0], ['19:00', 'Pilates', 'pilates', 0], ['20:00', 'Pilates', 'pilates', 0]] },
+    { de: 'Mittwoch', en: 'Wednesday', s: [['18:00', 'Reha-Sport', 'reha', 0], ['19:00', 'Reha-Sport', 'reha', 0]] },
+    { de: 'Donnerstag', en: 'Thursday', s: [['15:00', 'Seniorensport', 'praevention', 1], ['17:00', 'Yin Yoga', 'entspannung', 1], ['19:00', 'Pilates', 'pilates', 0], ['20:00', 'Langhantel Training', 'kraft', 1]] },
+    { de: 'Freitag', en: 'Friday', s: [['11:00', 'Reha-Sport', 'reha', 0], ['16:00', 'Gardetraining', 'ausdauer', 1], ['18:00', 'Gardetraining', 'ausdauer', 1]] },
+    { de: 'Samstag', en: 'Saturday', s: [] },
+    { de: 'Sonntag', en: 'Sunday', s: [] }
+  ];
+  var kCat = 'all';
+  function drawK() {
+    var todayIdx = (new Date().getDay() + 6) % 7;
+    $('#kgrid').innerHTML = DAYS.map(function (d, i) {
+      var slots = d.s.length ? d.s.map(function (s) {
+        var hide = kCat !== 'all' && (kCat === 'gap' ? !s[3] : s[2] !== kCat);
+        return '<div class="kslot' + (s[3] ? ' is-gap' : '') + (hide ? ' is-dim' : '') + '"><time>' + s[0] + '</time>' + s[1] + '</div>';
+      }).join('') : '<div class="kempty">' + (LANG === 'de' ? 'keine Kurse' : 'no courses') + '</div>';
+      return '<div class="kcol' + (i === todayIdx ? ' is-today' : '') + '"><h4>' + t(d) + '</h4>' + slots + '</div>';
+    }).join('');
+  }
+  $$('#k-ctl .chip').forEach(function (b) {
+    b.addEventListener('click', function () {
+      $$('#k-ctl .chip').forEach(function (x) { x.classList.remove('is-on'); });
+      b.classList.add('is-on');
+      kCat = b.dataset.cat;
+      drawK();
+    });
+  });
+  renderers.push(drawK);
+
+  /* ---------- 06/5 membership ---------- */
+  var TERMS = [{ m: 3, r: 69.90, pay: 1 }, { m: 12, r: 54.90, pay: 10 }, { m: 24, r: 44.90, pay: 22 }];
+  var mMode = 'std';
+  function eur(n) { return nf(n, 2) + ' €'; }
+  function drawM() {
+    var kk = mMode === 'kk';
+    $('#mgrid').innerHTML = TERMS.map(function (x) {
+      var months = kk ? x.pay : x.m;
+      var total = months * x.r + (kk ? 149.90 : 0);
+      var best = x.m === 24;
+      var rows =
+        '<div class="mrow"><span>' + (LANG === 'de' ? 'Monatsbeitrag' : 'Monthly fee') + '</span><b>' + eur(x.r) + '</b></div>' +
+        '<div class="mrow"><span>' + (LANG === 'de' ? 'bezahlte Monate' : 'months paid') + '</span><b>' + months + ' / ' + x.m + '</b></div>' +
+        (kk ? '<div class="mrow"><span>' + (LANG === 'de' ? 'einmalig' : 'one-off') + '</span><b>' + eur(149.90) + '</b></div>' : '') +
+        '<div class="mrow mtot"><span>' + (LANG === 'de' ? 'Gesamt' : 'Total') + '</span><b>' + eur(total) + '</b></div>' +
+        (kk ? '<div class="mrow"><span>' + (LANG === 'de' ? 'nach Erstattung' : 'after refund') + '</span><b>' + eur(total - 149.90) + '–' + eur(total - 104.93) + '</b></div>' : '');
+      return '<div class="mcard' + (best ? ' is-best' : '') + '"><h4>' + x.m + ' ' + (LANG === 'de' ? 'Monate' : 'months') + '</h4>' + rows + '</div>';
+    }).join('');
+    $('#m-note').innerHTML = kk
+      ? (LANG === 'de'
+        ? '<strong>Was die Zahl unten bedeutet.</strong> Die einmaligen 149,90 € sind die Kursgebühr, die Ihre Krankenkasse zu 70–100 % erstattet — das ergibt die Spanne. Bei voller Erstattung zahlen Sie für 24 Monate 987,80 € statt 1.077,60 € im Standardvertrag. Unverbindliche Berechnung; maßgeblich ist die Zusage Ihrer Krankenkasse.'
+        : '<strong>What the bottom figure means.</strong> The one-off €149.90 is the course fee your insurer refunds at 70–100 % — hence the range. With a full refund you pay €987.80 for 24 months instead of €1,077.60 on the standard contract. Indicative only; your insurer\'s confirmation governs.')
+      : (LANG === 'de'
+        ? '<strong>Zum Vergleich.</strong> Alle drei Verträge verlängern sich nach Ablauf monatlich, wenn nicht gekündigt wird. Wechseln Sie oben auf die geförderte Variante, um zu sehen, was die Krankenkasse davon übernimmt.'
+        : '<strong>For comparison.</strong> All three contracts renew monthly after their term unless cancelled. Switch to the subsidised variant above to see what the insurer covers.');
+  }
+  $$('#m-ctl .chip').forEach(function (b) {
+    b.addEventListener('click', function () {
+      $$('#m-ctl .chip').forEach(function (x) { x.classList.remove('is-on'); });
+      b.classList.add('is-on');
+      mMode = b.dataset.m;
+      drawM();
+    });
+  });
+  renderers.push(drawM);
+
+  /* ---------- 06/6 pathway ---------- */
+  var PATH = [
+    {
+      de: ['Verordnung', 'Die Ärztin verordnet Physiotherapie oder Reha-Sport. Für Reha-Sport genehmigt die Krankenkasse in der Regel 50 Einheiten über 18 Monate.', ['Wo', 'Hausarzt oder Facharzt'], ['Kosten', 'Rezeptgebühr'], ['Dauer', 'einmalig']],
+      en: ['Prescription', 'A doctor prescribes physiotherapy or Reha-Sport. For Reha-Sport the insurer usually approves 50 sessions across 18 months.', ['Where', 'GP or specialist'], ['Cost', 'Prescription charge'], ['Duration', 'one-off']]
+    },
+    {
+      de: ['Physiotherapie', 'Behandlung im Behandlungsraum der Praxis Berndt — Krankengymnastik, Fango, therapeutische Maßnahmen bei orthopädischen und neurologischen Erkrankungen.', ['Wo', 'Physiopraxis, eigener Trakt'], ['Kosten', 'Krankenkasse'], ['Dauer', 'nach Rezept']],
+      en: ['Physiotherapy', 'Treatment in the Berndt practice treatment rooms — physiotherapy, fango and therapeutic measures for orthopaedic and neurological conditions.', ['Where', 'Practice, its own wing'], ['Cost', 'Health insurer'], ['Duration', 'per prescription']]
+    },
+    {
+      de: ['Krankengymnastik am Gerät', 'Der Übergang. Die Frei-medical-Geräte sind für diese Therapieform zugelassen — der Patient trainiert therapeutisch begleitet, im selben Haus, auf der Trainingsfläche.', ['Wo', 'Frei-medical-Bereich'], ['Kosten', 'Krankenkasse'], ['Dauer', 'nach Rezept']],
+      en: ['Medical device training', 'The transition. The Frei-medical machines are approved for this therapy — the patient trains under therapeutic supervision, in the same building, on the training floor.', ['Where', 'Frei-medical area'], ['Cost', 'Health insurer'], ['Duration', 'per prescription']]
+    },
+    {
+      de: ['Reha-Sport', 'Gruppentraining unter Leitung ausgebildeter Trainer des Regiosportbunds Aachen e.V. — keine Physiotherapie, sondern regelmäßige Bewegung in der Gruppe.', ['Wo', 'Kursraum, 4× pro Woche'], ['Kosten', 'in der Regel kostenfrei'], ['Dauer', '50 Einheiten / 18 Monate']],
+      en: ['Reha-Sport', 'Group training led by qualified trainers from Regiosportbund Aachen e.V. — not physiotherapy, but regular movement in a group.', ['Where', 'Course room, 4× a week'], ['Cost', 'usually free of charge'], ['Duration', '50 sessions / 18 months']]
+    },
+    {
+      de: ['Dauertraining', 'Wenn die Verordnung endet, hört die Bewegung nicht auf. Der Milon-Zirkel braucht 2–3 Einheiten pro Woche — 66 bis 99 Minuten. Dieselbe Adresse, dieselben Trainer.', ['Wo', 'Milon, Atletica, Freifläche'], ['Kosten', 'ab 44,90 € / Monat'], ['Dauer', 'unbefristet']],
+      en: ['Permanent training', 'When the prescription ends, the movement does not. The Milon circuit needs 2–3 sessions a week — 66 to 99 minutes. Same address, same trainers.', ['Where', 'Milon, Atletica, open floor'], ['Cost', 'from €44.90 / month'], ['Duration', 'ongoing']]
+    }
+  ];
+  var curPath = 2;
+  function drawPath() {
+    $('#path').innerHTML = PATH.map(function (p, i) {
+      return '<button type="button" class="pstep' + (i === curPath ? ' is-on' : '') + '" data-p="' + i + '">' +
+        '<span class="pstep__bar"></span><span class="pstep__n">' + (LANG === 'de' ? 'SCHRITT ' : 'STAGE ') + (i + 1) + '</span>' +
+        '<span class="pstep__t">' + t(p)[0] + '</span></button>';
+    }).join('');
+    var d = t(PATH[curPath]);
+    $('#path-info').innerHTML = '<h3>' + d[0] + '</h3><p>' + d[1] + '</p><dl>' +
+      [d[2], d[3], d[4]].map(function (r) { return '<dt>' + r[0] + '</dt><dd>' + r[1] + '</dd>'; }).join('') + '</dl>';
+    $$('#path .pstep').forEach(function (b) {
+      b.addEventListener('click', function () { curPath = +b.dataset.p; drawPath(); });
+    });
+  }
+  renderers.push(drawPath);
+
+  /* ---------- boot ---------- */
+  setLang('de');
+})();
+</script>
