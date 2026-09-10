@@ -1,0 +1,718 @@
+<script>
+(function () {
+  'use strict';
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var $  = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+
+  /* the site's own page titles and meta descriptions, kept as written */
+  var TITLES = {
+    'home': 'HOME | Vitalzentrum Eschweiler',
+    'trainingsflaeche': 'Trainingsfläche – Milon Zirkel, Frei-medical und Freies Training | Vitalzentrum Eschweiler',
+    'kurse': 'Kurse & Reha-Sport | Vitalzentrum Eschweiler',
+    'karriere': 'Werden sie Teil des Teams | Vitalzentrum Eschweiler',
+    'physiopraxis': 'PHYSIOPRAXIS | Vitalzentrum Eschweiler',
+    'anwendungsbereiche': 'ANWENDUNGSBEREICHE | Vitalzentrum Eschweiler',
+    'milon-zirkel': 'Milon Zirkel – Effizientes Zirkeltraining im Vitalzentrum Eschweiler',
+    'frei-medical': 'FREI MEDICAL | Vitalzentrum Eschweiler',
+    'freies-training': 'FREIES TRAINING | Vitalzentrum Eschweiler',
+    'reha-sport': 'Reha Sport im Vitalzentrum Eschweiler',
+    'kurse-vor-ort': 'KURSE VOR ORT | Vitalzentrum Eschweiler',
+    'firmenfitness': 'FIRMENFITNESS | Vitalzentrum Eschweiler',
+    'mitgliedschaft': 'Mitgliedschaft | Vitalzentrum Eschweiler',
+    'oeffnungszeiten': 'Öffnungszeiten | Vitalzentrum Eschweiler',
+    'kontakt': 'KONTAKT | Vitalzentrum Eschweiler',
+    'stellen-physio': 'Stellen Physio | Vitalzentrum Eschweiler',
+    'stelle-fitness': 'Stelle Fitness | Vitalzentrum Eschweiler',
+    'impressum': 'Impressum | Vitalzentrum Eschweiler',
+    'datenschutz': 'Datenschutz | Vitalzentrum Eschweiler'
+  };
+  var DESCS = {
+    'trainingsflaeche': 'Die Trainingsfläche im Vitalzentrum Eschweiler: Milon Zirkel, Frei-medical Therapiegeräte, Atletica Kraftbereich und freie Trainingsfläche unter einem Dach.',
+    'kurse': 'Kurse und Reha-Sport im Vitalzentrum Eschweiler: Rückenschule, Pilates, Tai Chi, Hockergymnastik und ärztlich verordneter Reha-Sport mit dem Regiosportbund Aachen e.V.',
+    'karriere': 'Stellenangebote im Vitalzentrum Eschweiler: Physiotherapeuten (m/w/d) und Ausbildungsplatz zum/r Sport- und Fitnesskaufmann/-frau. Jetzt bewerben!',
+    'kontakt': 'Kontakt und Öffnungszeiten des Vitalzentrums Eschweiler. Grünstraße 23, 52249 Eschweiler-Dürwiß. Telefon +49 2403 - 749 93 99.',
+    'mitgliedschaft': 'Mitgliedschaften im Vitalzentrum Eschweiler: Standardvertrag, Förderung durch die Krankenkasse und Firmenkonditionen ab 44,90 € im Monat.',
+    'kurse-vor-ort': 'Kurse vor Ort im Vitalzentrum Eschweiler: Rückenschule, Hockergymnastik, Laufgruppe, Tai Chi und Pilates.',
+    'home': 'Vitalzentrum Eschweiler: Ihr medizinisches Fitnessstudio für gezieltes Training, Physiotherapie und Rehabilitationssport in Eschweiler.',
+    'physiopraxis': 'Physiotherapie Eschweiler - Ihre Praxis für Krankengymnastik und individuelle Therapien. Vereinbaren Sie jetzt einen Termin!',
+    'anwendungsbereiche': 'Therapieformen im Vitalzentrum Eschweiler: Entdecken Sie unsere vielfältigen Therapieangebote für Gesundheit und Wohlbefinden.',
+    'milon-zirkel': 'Entdecken Sie den Milon Zirkel im Vitalzentrum Eschweiler – effizientes Zirkeltraining für alle Fitnesslevels in nur 33 Minuten!',
+    'frei-medical': 'FREI-medical: Effektives strukturiertes Muskeltraining für Gesundheit und Rehabilitation im Vitalzentrum Eschweiler.',
+    'freies-training': 'Erleben Sie freies Training im Vitalzentrum Eschweiler. Ihr Fitnessstudio für Kraft- und Muskeltraining. Jetzt Mitglied werden!',
+    'reha-sport': 'Reha Sport im Vitalzentrum Eschweiler: Ärztlich verordnetes Bewegungstraining zur Verbesserung der Gesundheit und Lebensqualität.',
+    'firmenfitness': 'Entdecken Sie unsere Firmenfitness-Programme für ein gesundes und aktives Arbeitsumfeld. Steigern Sie das Wohlbefinden Ihrer Mitarbeitenden!',
+    'oeffnungszeiten': 'Entdecken Sie die Öffnungszeiten des Vitalzentrums Eschweiler und starten Sie Ihren Weg zu einem gesunden Leben.',
+    'stellen-physio': 'Entdecken Sie aktuelle Physiotherapeuten Stellenangebote im Vitalzentrum Eschweiler. Bewerben Sie sich jetzt für spannende Physiotherapie Jobs!',
+    'stelle-fitness': 'Werden Sie Teil des Vitalzentrums Eschweiler als Fitnesstrainer und unterstützen Sie Mitglieder auf ihrem Weg zu Gesundheit und Fitness.',
+    'impressum': 'Impressum Eschweiler: Informationen zu Gesundheitsdienstleistungen, Physiotherapie und Vitalzentrum Eschweiler. Kontakt: +49 2403 - 749 93 99.',
+    'datenschutz': 'Entdecken Sie unsere Datenschutzbestimmungen, die den Schutz Ihrer personenbezogenen Daten gemäß DSGVO gewährleisten.'
+  };
+
+
+  var TITLES_EN = {
+    'home': 'HOME | Vitalzentrum Eschweiler',
+    'physiopraxis': 'PHYSIOTHERAPY PRACTICE | Vitalzentrum Eschweiler',
+    'trainingsflaeche': 'Training floor – Milon circuit, Frei-medical and open training | Vitalzentrum Eschweiler',
+    'kurse': 'Courses & Reha-Sport | Vitalzentrum Eschweiler',
+    'mitgliedschaft': 'Membership | Vitalzentrum Eschweiler',
+    'firmenfitness': 'CORPORATE FITNESS | Vitalzentrum Eschweiler',
+    'karriere': 'Join the team | Vitalzentrum Eschweiler',
+    'kontakt': 'Contact & opening hours | Vitalzentrum Eschweiler',
+    'impressum': 'Impressum | Vitalzentrum Eschweiler',
+    'datenschutz': 'Privacy policy | Vitalzentrum Eschweiler',
+    'anwendungsbereiche': 'Areas of treatment | Vitalzentrum Eschweiler',
+    'milon-zirkel': 'Milon circuit – efficient circuit training at Vitalzentrum Eschweiler',
+    'frei-medical': 'FREI MEDICAL | Vitalzentrum Eschweiler',
+    'freies-training': 'OPEN TRAINING | Vitalzentrum Eschweiler',
+    'reha-sport': 'Reha-Sport at Vitalzentrum Eschweiler',
+    'kurse-vor-ort': 'COURSES ON SITE | Vitalzentrum Eschweiler',
+    'oeffnungszeiten': 'Opening hours | Vitalzentrum Eschweiler',
+    'stellen-physio': 'Physiotherapist vacancy | Vitalzentrum Eschweiler',
+    'stelle-fitness': 'Apprenticeship in fitness | Vitalzentrum Eschweiler'
+  };
+  var DESCS_EN = {
+    'home': 'Vitalzentrum Eschweiler: a medically oriented gym with an attached physiotherapy practice — training, therapy and rehabilitation under one roof.',
+    'physiopraxis': 'Physiotherapy in Eschweiler — the Ines Berndt practice for physiotherapy, medical device training and manual treatment. Get in touch.',
+    'trainingsflaeche': 'The training floor at Vitalzentrum Eschweiler: Milon circuit, Frei-medical therapy equipment, the Atletica strength area and open training space.',
+    'kurse': 'Courses and Reha-Sport at Vitalzentrum Eschweiler: back school, Pilates, Tai Chi, chair gymnastics and doctor-prescribed Reha-Sport.',
+    'mitgliedschaft': 'Memberships at Vitalzentrum Eschweiler: standard contract, health-insurer subsidy and employer schemes from €44.90 a month.',
+    'firmenfitness': 'Corporate fitness programmes for a healthy, active workforce at Vitalzentrum Eschweiler.',
+    'karriere': 'Vacancies at Vitalzentrum Eschweiler: physiotherapists (m/f/d) and an apprenticeship in sport and fitness management.',
+    'kontakt': 'Contact and opening hours for Vitalzentrum Eschweiler. Grünstraße 23, 52249 Eschweiler-Dürwiß. Phone +49 2403 - 749 93 99.',
+    'impressum': 'Legal notice for Vitalzentrum Eschweiler, Grünstraße 23, 52249 Eschweiler.',
+    'datenschutz': 'How Vitalzentrum Eschweiler handles personal data, in line with the GDPR.'
+  };
+
+  /* ---------------------------------------------------------- routing */
+  var pages = $$('.page');
+  var known = pages.map(function (p) { return p.dataset.page; });
+  var hdr = $('#hdr');
+
+  /* every address the old site published still resolves, and keeps its own
+     title and description — merging pages must not break a printed flyer */
+  var ALIAS = {
+    'anwendungsbereiche': ['physiopraxis', 'anwendungsbereiche'],
+    'milon-zirkel':       ['trainingsflaeche', 'milon-zirkel'],
+    'frei-medical':       ['trainingsflaeche', 'frei-medical'],
+    'freies-training':    ['trainingsflaeche', 'freies-training'],
+    'reha-sport':         ['kurse', 'reha-sport'],
+    'kurse-vor-ort':      ['kurse', null],
+    'oeffnungszeiten':    ['kontakt', 'oeffnungszeiten'],
+    'stellen-physio':     ['karriere', 'stellen-physio'],
+    'stelle-fitness':     ['karriere', 'stelle-fitness']
+  };
+
+  /* the language lives in the address, never on the visitor's device:
+     #/kurse is German, #/en/kurse is English. Nothing is stored, so there is
+     nothing to ask consent for. */
+  function routeOf() {
+    var h = (location.hash || '').replace(/^#\/?/, '').replace(/\/$/, '');
+    var lang = 'de';
+    if (h === 'en' || h.indexOf('en/') === 0) { lang = 'en'; h = h.slice(2).replace(/^\//, ''); }
+    var r;
+    if (known.indexOf(h) > -1) r = { page: h, key: h, anchor: null };
+    else if (ALIAS[h]) r = { page: ALIAS[h][0], key: h, anchor: ALIAS[h][1] };
+    else r = { page: 'home', key: 'home', anchor: null };
+    r.lang = lang;
+    return r;
+  }
+
+  function hashFor(page, lang) {
+    var base = page === 'home' ? '' : page;
+    return '#/' + (lang === 'en' ? ('en' + (base ? '/' + base : '')) : base);
+  }
+
+  var LANGRENDER = [];
+
+  function applyLang(lang) {
+    var html = document.documentElement;
+    html.setAttribute('data-lang', lang);
+    html.setAttribute('lang', lang);
+    $$('[data-lang-set]').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.langSet === lang));
+    });
+    /* every in-site link carries the language, so navigation never drops it */
+    $$('a[data-nav]').forEach(function (a) {
+      if (!a.dataset.href) a.dataset.href = a.getAttribute('href') || '#/';
+      var target = a.dataset.href.replace(/^#\/?/, '').replace(/\/$/, '') || 'home';
+      a.setAttribute('href', hashFor(target, lang));
+    });
+    LANGRENDER.forEach(function (f) { try { f(); } catch (err) { /* keep going */ } });
+    if (typeof refreshHours === 'function') refreshHours();
+  }
+
+  $$('[data-lang-set]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var r = routeOf();
+      location.hash = hashFor(r.key, b.dataset.langSet);
+    });
+  });
+
+  function markNav(route) {
+    $$('a[data-nav]').forEach(function (a) {
+      var target = (a.getAttribute('href') || '').replace(/^#\/?/, '') || 'home';
+      a.classList.toggle('is-on', target === route);
+    });
+    $$('.drop').forEach(function (d) {
+      var hit = $$('a[data-nav]', d).some(function (a) {
+        return (a.getAttribute('href') || '').replace(/^#\/?/, '') === route;
+      });
+      $('.drop__btn', d).classList.toggle('is-on', hit);
+    });
+  }
+
+  function show(r, instant) {
+    var route = r.page;
+    applyLang(r.lang || 'de');
+    pages.forEach(function (p) { p.classList.toggle('is-live', p.dataset.page === route); });
+    var live = $('.page.is-live');
+    if (!live) return;
+
+    document.body.classList.toggle('is-home', route === 'home');
+    var h1 = $('h1', live);
+    var T = (r.lang === 'en') ? TITLES_EN : TITLES;
+    var D = (r.lang === 'en') ? DESCS_EN : DESCS;
+    document.title = T[r.key] || T[route] || TITLES[r.key] || TITLES[route] || 'Vitalzentrum Eschweiler';
+    var meta = $('meta[name="description"]');
+    var desc = D[r.key] || D[route] || DESCS[r.key] || DESCS[route];
+    if (meta && desc) meta.setAttribute('content', desc);
+
+    markNav(route);
+    closeMenu();
+    closeDrops();
+
+    var target = r.anchor ? document.getElementById(r.anchor) : null;
+    if (target) {
+      target.scrollIntoView({ block: 'start', behavior: 'auto' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }
+    settleReveals(live);
+    if (route === 'home') relightHero();
+    if (route === 'datenschutz') buildToc();
+    var focusEl = target || h1;
+    if (focusEl && !instant) { focusEl.setAttribute('tabindex', '-1'); focusEl.focus({ preventScroll: true }); }
+    onScroll();
+  }
+
+  window.addEventListener('hashchange', function () { show(routeOf(), false); });
+
+  /* ---------------------------------------------------------- header */
+  function onScroll() {
+    var y = window.scrollY || document.documentElement.scrollTop;
+    hdr.classList.toggle('is-stuck', y > 12);
+
+    var doc = document.documentElement;
+    var max = Math.max(1, doc.scrollHeight - window.innerHeight);
+    var p = Math.min(1, Math.max(0, y / max));
+    var vh = window.innerHeight;
+    var fill = $('#spineFill'), dot = $('#spineDot');
+    if (fill) fill.style.height = (p * vh) + 'px';
+    if (dot) dot.style.top = (p * Math.max(60, vh - 210)) + 'px';
+
+    if (!reduce.matches) parallax();
+  }
+
+  /* ---------------------------------------------------------- parallax */
+  var bleeds = [];
+  /* only the live page: hidden pages measure as zero-height and would burn work every frame */
+  function collectBleeds() { bleeds = $$('.page.is-live [data-parallax] img'); }
+  function parallax() {
+    var vh = window.innerHeight;
+    bleeds.forEach(function (img) {
+      /* the image is wrapped in <picture>, so walk up to the band itself —
+         <picture> is display:contents and has no box of its own to measure */
+      var host = img.closest('[data-parallax]');
+      if (!host) return;
+      var r = host.getBoundingClientRect();
+      if (r.bottom < -200 || r.top > vh + 200) return;
+      var mid = r.top + r.height / 2 - vh / 2;
+      img.style.transform = 'translate3d(0,' + (mid * -0.075).toFixed(2) + 'px,0)';
+    });
+  }
+
+  /* ---------------------------------------------------------- reveals */
+  var io = 'IntersectionObserver' in window
+    ? new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { rootMargin: '0px 0px -6% 0px', threshold: 0.06 })
+    : null;
+
+  function settleReveals(scope) {
+    var items = $$('.rv', scope || document);
+    var vh = window.innerHeight;
+    items.forEach(function (el) {
+      if (el.classList.contains('in')) return;
+      var r = el.getBoundingClientRect();
+      if (r.top < vh * 0.94) { el.classList.add('in'); return; }
+      if (io) io.observe(el);
+    });
+    collectBleeds();
+    if (!reduce.matches) parallax();
+  }
+
+  /* ---------------------------------------------------------- hero */
+  function relightHero() {
+    var hero = $('#hero');
+    if (!hero) return;
+    hero.classList.remove('is-lit');
+    void hero.offsetWidth;
+    requestAnimationFrame(function () { hero.classList.add('is-lit'); });
+  }
+
+  /* ---------------------------------------------------------- dropdowns */
+  var drops = $$('[data-drop]');
+  function closeDrops(except) {
+    drops.forEach(function (d) {
+      if (d === except) return;
+      d.dataset.open = 'false';
+      $('.drop__btn', d).setAttribute('aria-expanded', 'false');
+    });
+  }
+  drops.forEach(function (d) {
+    var btn = $('.drop__btn', d);
+    var viaHover = false;
+    function set(open) {
+      d.dataset.open = open ? 'true' : 'false';
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      // a hover already opened it — the click adopts it rather than closing it
+      if (viaHover) { viaHover = false; set(true); return; }
+      var open = d.dataset.open === 'true';
+      closeDrops(d);
+      set(!open);
+    });
+    d.addEventListener('mouseenter', function () {
+      if (!window.matchMedia('(hover:hover)').matches) return;
+      closeDrops(d);
+      viaHover = d.dataset.open !== 'true';
+      set(true);
+    });
+    d.addEventListener('mouseleave', function () {
+      if (!window.matchMedia('(hover:hover)').matches) return;
+      viaHover = false;
+      set(false);
+    });
+  });
+  document.addEventListener('click', function () { closeDrops(); });
+
+  /* ---------------------------------------------------------- mobile menu */
+  var burger = $('#burger');
+  function closeMenu() {
+    document.body.classList.remove('menu-open');
+    burger.setAttribute('aria-expanded', 'false');
+    burger.setAttribute('aria-label', 'Menü öffnen');
+  }
+  burger.addEventListener('click', function () {
+    var open = document.body.classList.toggle('menu-open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    burger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeMenu(); closeDrops(); }
+  });
+
+  /* ---------------------------------------------------------- opening hours */
+  /* minutes from midnight, transcribed from the studio's own Öffnungszeiten table */
+  var HOURS = {
+    1: [[600, 840], [960, 1260]],
+    2: [[480, 840], [960, 1260]],
+    3: [[600, 840], [960, 1260]],
+    4: [[600, 840], [1140, 1320]],
+    5: [[480, 840], [960, 1260]],
+    6: [[540, 780]],
+    0: [[540, 780]]
+  };
+  var DAYNAMES = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+  function hhmm(m) {
+    var h = Math.floor(m / 60), r = m % 60;
+    var t = (h < 10 ? '0' : '') + h + ':' + (r < 10 ? '0' : '') + r;
+    return document.documentElement.getAttribute('data-lang') === 'en' ? t : t + ' Uhr';
+  }
+  function refreshHours() {
+    var now = new Date();
+    var d = now.getDay();
+    var mins = now.getHours() * 60 + now.getMinutes();
+    var slots = HOURS[d] || [];
+    var open = slots.some(function (s) { return mins >= s[0] && mins < s[1]; });
+
+    var chip = $('#statusChip');
+    if (chip) chip.classList.toggle('is-open', open);
+
+    var DAYNAMES_EN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var en = document.documentElement.getAttribute('data-lang') === 'en';
+    var line = (en ? DAYNAMES_EN[d] : DAYNAMES[d]) + ' · ' + (slots.length
+      ? slots.map(function (s) { return hhmm(s[0]) + ' – ' + hhmm(s[1]); }).join(' · ')
+      : (en ? 'closed' : 'geschlossen'));
+    $$('.livenow').forEach(function (el) {
+      el.innerHTML = '<i class="livenow__dot' + (open ? ' is-open' : '') + '"></i><span class="num">' + line + '</span>';
+    });
+
+    $$('#hours .day').forEach(function (el) {
+      var isToday = String(d) === el.dataset.day;
+      el.classList.toggle('day--now', isToday);
+      var tag = $('.day__tag', el);
+      if (tag) tag.textContent = isToday && open ? '●' : '';
+    });
+  }
+
+  /* ---------------------------------------------------------- kontakt form */
+  var form = $('#kontaktForm');
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      var el = form.elements;
+      var name = el['name'].value.trim();
+      var mail = el['mail'].value.trim();
+      var tel = el['tel'].value.trim();
+      var body = 'Name: ' + name + '\nE-Mail: ' + mail + '\nRückrufnummer: ' + tel + '\n';
+      window.location.href = 'mailto:kontakt@vitalzentrum-eschweiler.de'
+        + '?subject=' + encodeURIComponent('Vitalzentrum Eschweiler — ' + name)
+        + '&body=' + encodeURIComponent(body);
+    });
+  }
+
+  /* ---------------------------------------------------------- datenschutz toc */
+  var tocBuilt = false;
+  function buildToc() {
+    if (tocBuilt) return;
+    var toc = $('#toc'), body = $('#dsBody');
+    if (!toc || !body) return;
+    $$('h3', body).forEach(function (h, i) {
+      if (!h.id) h.id = 'ds-' + i;
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent.trim();
+      a.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        h.scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth', block: 'start' });
+      });
+      toc.appendChild(a);
+    });
+    tocBuilt = true;
+  }
+
+
+
+  /* ============================================================ modules ==== */
+  var LG = function () { return document.documentElement.getAttribute('data-lang') === 'en' ? 1 : 0; };
+  var loc = function () { return LG() ? 'en-GB' : 'de-DE'; };
+  var fdate = function (d) { return d.toLocaleDateString(loc(), { day: '2-digit', month: '2-digit', year: 'numeric' }); };
+  var fnum  = function (n, d) { return n.toLocaleString(loc(), { minimumFractionDigits: d, maximumFractionDigits: d }); };
+
+  /* ---- Milon dosage ring ---- */
+  (function () {
+    var segs = $('#ringSegs'); if (!segs) return;
+    var STATIONS = [
+      [['Beinpresse', 'Leg press'],
+       ['Öffnet den Zirkel. Große Muskelgruppen zuerst — das Gerät stellt Sitz und Widerstand selbst ein.',
+        'Opens the circuit. Large muscle groups first — the machine sets seat and resistance itself.']],
+      [['Bauch', 'Abdominals'],
+       ['Rumpfmuskulatur. Belastet konzentrisch und exzentrisch, also auf Hin- und Rückweg.',
+        'Core musculature. Loaded both concentrically and eccentrically — on the way out and the way back.']],
+      [['Rückenstrecker', 'Back extension'],
+       ['Der Grund, warum viele überhaupt kommen: Rücken- und Gelenkbeschwerden.',
+        'The reason many people come at all: back and joint complaints.']],
+      [['Brustpresse', 'Chest press'],
+       ['Geführte Bewegung. Kein Ausweichen, kein falscher Winkel, kein Trainingspartner nötig.',
+        'Guided movement. No evasion, no wrong angle, no training partner needed.']],
+      [['Latzug', 'Lat pulldown'],
+       ['Zugbewegung als Gegenspieler zur Brustpresse. Hält die Schulter im Gleichgewicht.',
+        'A pulling movement to counter the chest press. Keeps the shoulder in balance.']],
+      [['Schulterpresse', 'Shoulder press'],
+       ['Schließt den Durchgang. Danach beginnt die zweite von drei Runden.',
+        'Closes the round. Then the second of three rounds begins.']]
+    ];
+    var C = 2 * Math.PI * 88, SEG = C / 6, cur = 0, week = 2;
+    var NS = 'http://www.w3.org/2000/svg';
+    STATIONS.forEach(function (st, i) {
+      var g = document.createElementNS(NS, 'g');
+      g.setAttribute('class', 'dose__seg');
+      g.setAttribute('tabindex', '0');
+      g.setAttribute('role', 'button');
+      ['dose__arc', 'dose__hit'].forEach(function (cls) {
+        var c = document.createElementNS(NS, 'circle');
+        c.setAttribute('cx', '120'); c.setAttribute('cy', '120'); c.setAttribute('r', '88');
+        c.setAttribute('class', cls);
+        c.setAttribute('transform', 'rotate(-90 120 120)');
+        c.setAttribute('stroke-dasharray', (SEG - 7) + ' ' + (C - SEG + 7));
+        c.setAttribute('stroke-dashoffset', String(-(i * SEG + 3.5)));
+        if (cls === 'dose__arc') c.setAttribute('stroke', 'var(--line)');
+        g.appendChild(c);
+      });
+      function pick() { cur = i; draw(); }
+      g.addEventListener('click', pick);
+      g.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); }
+      });
+      segs.appendChild(g);
+    });
+    function draw() {
+      var L = LG();
+      $$('.dose__arc', segs).forEach(function (c, i) {
+        c.setAttribute('stroke', i === cur ? 'var(--puls)' : 'var(--line)');
+      });
+      $$('.dose__seg', segs).forEach(function (g, i) {
+        g.setAttribute('aria-label', (L ? 'Station ' : 'Station ') + (i + 1) + ': ' + STATIONS[i][0][L]);
+      });
+      $('#ringCard').innerHTML = '<b>' + (cur + 1) + ' · ' + STATIONS[cur][0][L] + '</b><p>' + STATIONS[cur][1][L] + '</p>';
+      var wk = 33 * week;
+      $('#ringWeek').textContent  = wk + ' min';
+      $('#ringMonth').textContent = fnum(wk * 52 / 12 / 60, 1) + ' h';
+      $('#ringPct').textContent   = fnum(wk / 10080 * 100, 1) + ' %';
+      $('#ringUnit').textContent  = L ? 'minutes / session' : 'Minuten / Einheit';
+      $('#ringSub').textContent   = L ? '3 rounds of 11 min' : '3 Durchgänge à 11 min';
+    }
+    $$('[data-week]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        $$('[data-week]').forEach(function (x) { x.classList.remove('is-on'); });
+        b.classList.add('is-on'); week = +b.dataset.week; draw();
+      });
+    });
+    LANGRENDER.push(draw); draw();
+  }());
+
+  /* ---- floor plan ---- */
+  (function () {
+    var info = $('#planInfo'); if (!info) return;
+    var Z = {
+      milon: [['Milon-Zirkel', 'Milon circuit'], [
+        ['6 elektronisch gesteuerte Geräte', '6 electronically controlled machines'],
+        ['Ein Durchgang 11 Minuten, eine Einheit ca. 33 Minuten', 'One round 11 minutes, one session about 33 minutes'],
+        ['Die Geräte stellen sich auf den Trainierenden ein', 'The machines adjust themselves to the person training'],
+        ['Für Anfänger bis Leistungssportler', 'From beginners to competitive athletes']]],
+      frei: [['Frei-medical', 'Frei-medical'], [
+        ['Zugelassen für Krankengymnastik am Gerät', 'Approved for medical device training'],
+        ['Feine Steuerung von Widerstand, Winkel und Geschwindigkeit', 'Fine control of resistance, angle and speed'],
+        ['Biofeedback, Fortschritte über die Zeit vergleichbar', 'Biofeedback, progress comparable over time'],
+        ['Die Brücke zwischen Praxis und Studio', 'The bridge between practice and gym']]],
+      frei2: [['Freifläche', 'Open floor'], [
+        ['Sprossenwand — Kraft, Beweglichkeit, Koordination', 'Wall bars — strength, mobility, coordination'],
+        ['Seilzug — kontrolliertes, isoliertes Krafttraining', 'Cable machine — controlled, isolated strength work'],
+        ['Bodentraining mit Bändern, Kurzhanteln, eigenem Gewicht', 'Floor work with bands, dumbbells and bodyweight'],
+        ['Auch zur Mobilisierung nach Verletzungen', 'Also for mobilisation after injury']]],
+      atletica: [['Atletica-Kraftbereich', 'Atletica strength area'], [
+        ['Multipresse mit Sicherheits-Haken — Training ohne Partner', 'Multi-press with safety hooks — training without a spotter'],
+        ['Geführte Grundübungen: Bankdrücken, Kniebeuge, Schulterdrücken', 'Guided basics: bench press, squat, shoulder press'],
+        ['Kabelzug und Dip-Griffe am selben Gerät', 'Cable pulley and dip handles on the same frame'],
+        ['Hantelbänke für freie Gewichte', 'Benches for free weights']]],
+      kursraum: [['Kursraum', 'Course room'], [
+        ['18 Termine pro Woche', '18 slots per week'],
+        ['Rückenschule, Pilates, Tai Chi, Yin Yoga, Hockergymnastik', 'Back school, Pilates, Tai Chi, Yin Yoga, chair gymnastics'],
+        ['Reha-Sport des Regiosportbunds, viermal wöchentlich', 'Regiosportbund Reha-Sport, four times a week'],
+        ['Gardetraining und Seniorensport', 'Guard training and senior sport']]],
+      praxis: [['Physiopraxis Berndt', 'Berndt physiotherapy practice'], [
+        ['Seit mehr als 12 Jahren in Dürwiß', 'More than 12 years in Dürwiß'],
+        ['Behandlungsräume nach neuesten Standards', 'Treatment rooms built to current standards'],
+        ['Krankengymnastik, Fango, therapeutische Maßnahmen', 'Physiotherapy, fango, therapeutic measures'],
+        ['Orthopädische und neurologische Erkrankungen', 'Orthopaedic and neurological conditions']]],
+      empfang: [['Empfang', 'Reception'], [
+        ['Erste Beratung und Probetraining', 'First consultation and trial session'],
+        ['Fragen zu Mitgliedschaft und Kassenförderung', 'Questions on membership and insurer subsidies'],
+        ['Telefonisch: +49 2403 - 749 93 99', 'By phone: +49 2403 - 749 93 99']]],
+      umkleide: [['Umkleiden', 'Changing rooms'], [
+        ['Umkleiden und Duschen', 'Changing rooms and showers']]]
+    };
+    var cur = 'milon';
+    function draw() {
+      var L = LG();
+      $$('.zone').forEach(function (z) {
+        z.classList.toggle('is-on', z.dataset.z === cur);
+        var d = Z[z.dataset.z]; if (d) z.setAttribute('aria-label', d[0][L]);
+      });
+      var d = Z[cur];
+      info.innerHTML = '<h4 class="d3">' + d[0][L] + '</h4><ul>' +
+        d[1].map(function (x) { return '<li>' + x[L] + '</li>'; }).join('') + '</ul>';
+    }
+    $$('.zone').forEach(function (z) {
+      function pick() { cur = z.dataset.z; draw(); }
+      z.addEventListener('click', pick);
+      z.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); }
+      });
+    });
+    LANGRENDER.push(draw); draw();
+  }());
+
+  /* ---- Reha-Sport: 50 units across 18 months ---- */
+  (function () {
+    var dotsEl = $('#rehaDots'); if (!dotsEl) return;
+    $('#rehaDate').value = new Date().toISOString().slice(0, 10);
+    for (var i = 0; i < 50; i++) {
+      var d = document.createElement('span');
+      d.className = 'reha__dot';
+      dotsEl.appendChild(d);
+    }
+    var dots = $$('.reha__dot', dotsEl);
+    function draw() {
+      var L = LG();
+      var freq = +$('#rehaFreq').value;
+      var start = new Date($('#rehaDate').value);
+      if (isNaN(start.getTime())) start = new Date();
+      var expiry = new Date(start.getTime()); expiry.setMonth(expiry.getMonth() + 18);
+      var weeks = Math.ceil(50 / freq);
+      var end = new Date(start.getTime() + weeks * 7 * 86400000);
+      var avail = Math.floor((expiry - start) / (7 * 86400000));
+      var doable = Math.min(50, avail * freq);
+      var buf = avail - weeks;
+      dots.forEach(function (el, n) { el.classList.toggle('is-used', n < doable); });
+      $('#rehaLab').textContent   = (L ? 'Sessions per week: ' : 'Einheiten pro Woche: ') + freq;
+      $('#rehaWeeks').textContent = weeks + (L ? ' weeks' : ' Wochen');
+      $('#rehaEnd').textContent   = fdate(end);
+      $('#rehaExp').textContent   = fdate(expiry);
+      $('#rehaBuf').textContent   = buf + (L ? ' weeks' : ' Wochen');
+      $$('[data-reha-lab]').forEach(function (el) {
+        el.textContent = L ? el.dataset.en : el.dataset.de;
+      });
+      $('#rehaNote').innerHTML = L
+        ? 'At ' + freq + ' session' + (freq > 1 ? 's' : '') + ' a week the 50 sessions are used up after ' + weeks +
+          ' weeks — ' + buf + ' weeks before the prescription expires. That is how many weeks may be missed in between ' +
+          'without losing sessions. We run Reha-Sport on Mondays at 17:30, Wednesdays at 18:00 and 19:00, and Fridays at 11:00.'
+        : 'Bei ' + freq + ' Einheit' + (freq > 1 ? 'en' : '') + ' pro Woche sind die 50 Einheiten nach ' + weeks +
+          ' Wochen aufgebraucht — ' + buf + ' Wochen vor Ablauf der Verordnung. So viele Wochen dürfen dazwischen ausfallen, ' +
+          'ohne dass Einheiten verfallen. Reha-Sport findet bei uns montags 17:30, mittwochs 18:00 und 19:00 sowie freitags 11:00 statt.';
+    }
+    $('#rehaFreq').addEventListener('input', draw);
+    $('#rehaDate').addEventListener('change', draw);
+    LANGRENDER.push(draw); draw();
+  }());
+
+  /* ---- course plan: today + filter (reads the existing markup) ---- */
+  (function () {
+    var ctl = $('#kCtl'); if (!ctl) return;
+    var CAT = [
+      [/reha/i, 'reha'], [/pilates/i, 'pilates'],
+      [/hockergymnastik|rückenschule|seniorensport/i, 'praevention'],
+      [/tai chi|yoga/i, 'entspannung'],
+      [/fit ?& ?fun|garde/i, 'ausdauer'], [/langhantel/i, 'kraft']
+    ];
+    $$('.sched__row').forEach(function (r) {
+      var k = ($('.sched__k', r) || {}).textContent || '';
+      for (var i = 0; i < CAT.length; i++) { if (CAT[i][0].test(k)) { r.dataset.cat = CAT[i][1]; return; } }
+      r.dataset.cat = 'sonstige';
+    });
+    var DAYS = ['Montags', 'Dienstags', 'Mittwochs', 'Donnerstags', 'Freitags'];
+    var today = DAYS[(new Date().getDay() + 6) % 7];
+    if (today) {
+      $$('.sched__day').forEach(function (d) {
+        var h = $('h4', d);
+        if (h && h.textContent.trim().indexOf(today) === 0) d.classList.add('is-today');
+      });
+    }
+    $$('.mod__chip', ctl).forEach(function (b) {
+      b.addEventListener('click', function () {
+        $$('.mod__chip', ctl).forEach(function (x) { x.classList.remove('is-on'); });
+        b.classList.add('is-on');
+        var c = b.dataset.cat;
+        $$('.sched__row').forEach(function (r) {
+          r.classList.toggle('is-dim', c !== 'all' && r.dataset.cat !== c);
+        });
+      });
+    });
+  }());
+
+  /* ---- membership over the full term ---- */
+  (function () {
+    var grid = $('#mCalc'); if (!grid) return;
+    var TERMS = [{ m: 3, r: 69.90, pay: 1 }, { m: 12, r: 54.90, pay: 10 }, { m: 24, r: 44.90, pay: 22 }];
+    var mode = 'std';
+    function eur(n) { return fnum(n, 2) + ' €'; }
+    function draw() {
+      var L = LG(), kk = mode === 'kk';
+      grid.innerHTML = TERMS.map(function (x) {
+        var months = kk ? x.pay : x.m;
+        var total = months * x.r + (kk ? 149.90 : 0);
+        return '<div class="mcard' + (x.m === 24 ? ' is-best' : '') + '">' +
+          '<h4>' + x.m + (L ? ' months' : ' Monate Laufzeit') + '</h4>' +
+          '<div class="mrow"><span>' + (L ? 'Monthly fee' : 'Monatsbeitrag') + '</span><b>' + eur(x.r) + '</b></div>' +
+          '<div class="mrow"><span>' + (L ? 'months paid' : 'bezahlte Monate') + '</span><b>' + months + ' / ' + x.m + '</b></div>' +
+          (kk ? '<div class="mrow"><span>' + (L ? 'one-off' : 'einmalig') + '</span><b>' + eur(149.90) + '</b></div>' : '') +
+          '<div class="mrow mrow--tot"><span>' + (L ? 'Total' : 'Gesamt') + '</span><b>' + eur(total) + '</b></div>' +
+          (kk ? '<div class="mrow"><span>' + (L ? 'after refund' : 'nach Erstattung') + '</span><b>' +
+                eur(total - 149.90) + ' – ' + eur(total - 104.93) + '</b></div>' : '') +
+          '</div>';
+      }).join('');
+      $('#mNote').innerHTML = kk
+        ? (L ? 'The one-off €149.90 is the course fee your health insurer refunds at 70–100 % — hence the range. Your insurer’s confirmation governs; please ask us or your insurer about the applicable refund.'
+             : 'Die einmaligen 149,90 € sind die Kursgebühr, die Ihre Krankenkasse zu 70 – 100 % erstattet — daraus ergibt sich die Spanne. Maßgeblich ist die Zusage Ihrer Krankenkasse; bitte sprechen Sie uns oder Ihre Kasse zu den jeweiligen Erstattungshöhen an.')
+        : (L ? 'All contracts renew by a further month after their term unless cancelled. Switch to the subsidised option above to see what the health insurer covers.'
+             : 'Alle Verträge verlängern sich nach Ablauf der Laufzeit um jeweils einen weiteren Monat, wenn nicht gekündigt wird. Wechseln Sie oben auf die geförderte Variante, um zu sehen, was die Krankenkasse übernimmt.');
+    }
+    $$('.mod__chip', $('#mCtl')).forEach(function (b) {
+      b.addEventListener('click', function () {
+        $$('.mod__chip', $('#mCtl')).forEach(function (x) { x.classList.remove('is-on'); });
+        b.classList.add('is-on'); mode = b.dataset.m; draw();
+      });
+    });
+    LANGRENDER.push(draw); draw();
+  }());
+
+  /* ---- the care pathway through the building ---- */
+  (function () {
+    var host = $('#path'); if (!host) return;
+    var STEPS = [
+      [['Verordnung', 'Prescription'],
+       ['Die Ärztin oder der Arzt verordnet Physiotherapie oder Reha-Sport. Für Reha-Sport genehmigt die Krankenkasse in der Regel 50 Einheiten über 18 Monate.',
+        'A doctor prescribes physiotherapy or Reha-Sport. For Reha-Sport the health insurer usually approves 50 sessions across 18 months.'],
+       ['Hausarzt oder Facharzt', 'GP or specialist'], ['Rezeptgebühr', 'Prescription charge'], ['einmalig', 'one-off']],
+      [['Physiotherapie', 'Physiotherapy'],
+       ['Behandlung in der Praxis Ines Berndt — Krankengymnastik, Fango und therapeutische Maßnahmen bei orthopädischen und neurologischen Erkrankungen.',
+        'Treatment in the Ines Berndt practice — physiotherapy, fango and therapeutic measures for orthopaedic and neurological conditions.'],
+       ['Physiopraxis, eigener Bereich', 'Practice, its own area'], ['Krankenkasse', 'Health insurer'], ['nach Verordnung', 'per prescription']],
+      [['Krankengymnastik am Gerät', 'Medical device training'],
+       ['Der Übergang. Die Frei-medical-Geräte sind für diese Therapieform zugelassen — Sie trainieren therapeutisch begleitet, im selben Haus, auf der Trainingsfläche.',
+        'The transition. The Frei-medical machines are approved for this form of therapy — you train under therapeutic supervision, in the same building, on the training floor.'],
+       ['Frei-medical-Bereich', 'Frei-medical area'], ['Krankenkasse', 'Health insurer'], ['nach Verordnung', 'per prescription']],
+      [['Reha-Sport', 'Reha-Sport'],
+       ['Gruppentraining unter Leitung der speziell ausgebildeten Trainer des Regiosportbunds Aachen e.V. — keine Physiotherapie, sondern regelmäßige Bewegung in der Gruppe.',
+        'Group training led by the specially qualified trainers of Regiosportbund Aachen e.V. — not physiotherapy, but regular movement in a group.'],
+       ['Kursraum, viermal pro Woche', 'Course room, four times a week'],
+       ['nach Genehmigung in der Regel kostenfrei', 'usually free of charge once approved'],
+       ['50 Einheiten / 18 Monate', '50 sessions / 18 months']],
+      [['Dauertraining', 'Permanent training'],
+       ['Wenn die Verordnung endet, hört die Bewegung nicht auf. Der Milon-Zirkel braucht zwei bis drei Einheiten pro Woche — 66 bis 99 Minuten. Dieselbe Adresse, dieselben Trainer.',
+        'When the prescription ends, the movement does not. The Milon circuit needs two to three sessions a week — 66 to 99 minutes. Same address, same trainers.'],
+       ['Milon, Atletica, Freifläche', 'Milon, Atletica, open floor'],
+       ['ab 44,90 € im Monat', 'from €44.90 a month'], ['unbefristet', 'ongoing']]
+    ];
+    var cur = 2;
+    function draw() {
+      var L = LG();
+      host.innerHTML = STEPS.map(function (s, i) {
+        return '<button type="button" class="pstep' + (i === cur ? ' is-on' : '') + '" data-p="' + i + '">' +
+          '<span class="pstep__bar"></span><span class="pstep__n">' + (L ? 'STAGE ' : 'SCHRITT ') + (i + 1) + '</span>' +
+          '<span class="pstep__t">' + s[0][L] + '</span></button>';
+      }).join('');
+      var s = STEPS[cur];
+      $('#pathInfo').innerHTML = '<h4 class="d3">' + s[0][L] + '</h4><p>' + s[1][L] + '</p><dl>' +
+        '<dt>' + (L ? 'Where' : 'Wo') + '</dt><dd>' + s[2][L] + '</dd>' +
+        '<dt>' + (L ? 'Cost' : 'Kosten') + '</dt><dd>' + s[3][L] + '</dd>' +
+        '<dt>' + (L ? 'Duration' : 'Dauer') + '</dt><dd>' + s[4][L] + '</dd></dl>';
+      $$('.pstep', host).forEach(function (b) {
+        b.addEventListener('click', function () { cur = +b.dataset.p; draw(); });
+      });
+    }
+    LANGRENDER.push(draw); draw();
+  }());
+
+  /* ---------------------------------------------------------- boot */
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', function () { onScroll(); settleReveals(); }, { passive: true });
+
+  show(routeOf(), true);
+  refreshHours();
+  setInterval(refreshHours, 60000);
+  onScroll();
+  requestAnimationFrame(function () { settleReveals(); relightHero(); });
+})();
+</script>
+</body>
+</html>
