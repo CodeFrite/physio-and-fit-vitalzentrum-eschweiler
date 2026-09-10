@@ -109,6 +109,31 @@
 }
 .sheet__lang button[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:var(--ground)}
 
+/* ==========================================================================
+   Colour scheme switch. Session-less, exactly like the language: the choice
+   is written to data-theme on <html> and nowhere else — no cookie, no
+   localStorage — so § 25 TTDSG never applies and there is nothing to consent
+   to. A reload hands the visitor back to their operating-system preference.
+   ========================================================================== */
+.themesw{display:none; border:1px solid var(--line); border-radius:3px; overflow:hidden; flex:0 0 auto}
+.themesw button{
+  display:grid; place-items:center; width:32px; height:29px;
+  border:0; background:transparent; color:var(--moss); cursor:pointer; padding:0;
+  transition:background .2s var(--ease), color .2s var(--ease);
+}
+.themesw button svg{width:14px; height:14px; display:block}
+.themesw button[aria-pressed="true"]{background:var(--ink); color:var(--ground)}
+.themesw button:hover:not([aria-pressed="true"]){color:var(--ink)}
+.sheet__theme{display:flex; gap:8px; margin-top:6px}
+.sheet__theme button{
+  display:inline-flex; align-items:center; gap:9px;
+  font-family:var(--mono); font-size:12px; letter-spacing:.13em; text-transform:uppercase;
+  padding:9px 16px; border:1px solid var(--line); border-radius:3px;
+  background:transparent; color:var(--moss); cursor:pointer;
+}
+.sheet__theme button svg{width:14px; height:14px; display:block; flex:0 0 auto}
+.sheet__theme button[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:var(--ground)}
+
 </style>
 <style>
 /* ============================================================
@@ -146,9 +171,13 @@
   --pad:clamp(20px,5vw,64px);
   --rail:190px;
   --ease:cubic-bezier(.22,.61,.36,1);
+
+  /* native UI — scrollbars, form controls — must follow the same switch */
+  color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
+    color-scheme:dark;
     --ground:#0B1310;
     --ground-2:#101A15;
     --raise:#152118;
@@ -168,6 +197,7 @@
   }
 }
 :root[data-theme="dark"]{
+  color-scheme:dark;
   --ground:#0B1310;
   --ground-2:#101A15;
   --raise:#152118;
@@ -352,17 +382,17 @@ p:last-child{margin-bottom:0}
   text-transform:uppercase; color:var(--moss); margin-top:4px;
 }
 
-.nav{display:none; margin-left:auto; align-items:center; gap:2px}
+.nav{display:none; margin-left:auto; align-items:center; gap:0}
 @media (min-width:1060px){.nav{display:flex}}
 .nav a,.nav button{
   font-family:var(--display); font-weight:600; font-variation-settings:"wdth" 108;
   text-transform:uppercase; font-size:12.5px; letter-spacing:.055em;
   background:none; border:0; cursor:pointer; text-decoration:none;
-  padding:9px 13px; border-radius:3px; position:relative; color:var(--ink);
+  padding:9px 10px; border-radius:3px; position:relative; color:var(--ink);
   transition:color .25s var(--ease);
 }
 .nav a::after{
-  content:""; position:absolute; left:13px; right:13px; bottom:4px; height:1px;
+  content:""; position:absolute; left:10px; right:10px; bottom:4px; height:1px;
   background:var(--puls); transform:scaleX(0); transform-origin:left;
   transition:transform .38s var(--ease);
 }
@@ -1094,28 +1124,31 @@ a.cell:hover .cell__go svg{transform:translateX(4px)}
 .pinfo dd{margin:0}
 
 /* ==========================================================================
-   one desktop threshold for the whole header. Six nav items, the language
-   switch, the live chip and the CTA only coexist above 1280px; below that the
-   burger menu carries all of it (the sheet has its own language switch).
+   one desktop threshold for the whole header. Six nav items, the colour-scheme
+   switch, the language switch, the labelled live chip and the CTA only fit
+   side by side above 1420px (measured: the CTA starts overflowing at ~1405);
+   below that the burger sheet carries all of it, including both switches.
    ========================================================================== */
-@media (max-width:1339px){
+@media (max-width:1419px){
   .nav{display:none}
   .langsw{display:none}
+  .themesw{display:none}
   .status{display:none}
   .burger{display:grid}
   .hdr__cta{margin-left:auto}
 }
-@media (min-width:1340px){
+@media (min-width:1420px){
   .nav{display:flex}
   .langsw{display:flex}
+  .themesw{display:flex}
   .status{display:inline-flex}
   .burger{display:none}
+  .status,.hdr__cta{margin-left:0}
 }
-/* the chip is the live "open now" dot; its label is carried by aria-label */
-.status .status__t{display:none}
-.status{padding-inline:10px}
+/* the chip is the live "open now" dot AND its label — an unlabelled dot next to
+   the language switch reads as an icon toggle, which is exactly what it is not */
 /* the header bar may run wider than the 1280px reading measure — it holds more items */
-@media (min-width:1340px){.hdr__in{max-width:1360px; gap:18px}}
+@media (min-width:1420px){.hdr__in{max-width:1500px; gap:14px; padding-inline:40px}}
 
 /* <picture> is a wrapper only; the layouts position the <img> itself */
 picture{display:contents}

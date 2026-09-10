@@ -151,6 +151,37 @@
     });
   });
 
+  /* ---------------------------------------------------------- colour scheme
+     Session-less by the same argument as the language: the choice is written
+     to data-theme on <html> and nowhere else — no cookie, no localStorage —
+     so nothing is stored on the visitor's device and § 25 TTDSG never applies.
+     A reload returns them to their operating-system preference. */
+  var darkMQ = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+
+  function themeNow() {
+    var set = document.documentElement.getAttribute('data-theme');
+    if (set === 'light' || set === 'dark') return set;
+    return (darkMQ && darkMQ.matches) ? 'dark' : 'light';   /* still following the OS */
+  }
+
+  function markTheme() {
+    var now = themeNow();
+    $$('[data-theme-set]').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.themeSet === now));
+    });
+  }
+
+  $$('[data-theme-set]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.documentElement.setAttribute('data-theme', b.dataset.themeSet);
+      markTheme();
+    });
+  });
+
+  /* while no choice has been made, the OS flipping mid-session must move the marker */
+  if (darkMQ && darkMQ.addEventListener) darkMQ.addEventListener('change', markTheme);
+  markTheme();
+
   function markNav(route) {
     $$('a[data-nav]').forEach(function (a) {
       var target = (a.getAttribute('href') || '').replace(/^#\/?/, '') || 'home';

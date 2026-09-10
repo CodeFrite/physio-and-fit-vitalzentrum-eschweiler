@@ -109,6 +109,31 @@
 }
 .sheet__lang button[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:var(--ground)}
 
+/* ==========================================================================
+   Colour scheme switch. Session-less, exactly like the language: the choice
+   is written to data-theme on <html> and nowhere else — no cookie, no
+   localStorage — so § 25 TTDSG never applies and there is nothing to consent
+   to. A reload hands the visitor back to their operating-system preference.
+   ========================================================================== */
+.themesw{display:none; border:1px solid var(--line); border-radius:3px; overflow:hidden; flex:0 0 auto}
+.themesw button{
+  display:grid; place-items:center; width:32px; height:29px;
+  border:0; background:transparent; color:var(--moss); cursor:pointer; padding:0;
+  transition:background .2s var(--ease), color .2s var(--ease);
+}
+.themesw button svg{width:14px; height:14px; display:block}
+.themesw button[aria-pressed="true"]{background:var(--ink); color:var(--ground)}
+.themesw button:hover:not([aria-pressed="true"]){color:var(--ink)}
+.sheet__theme{display:flex; gap:8px; margin-top:6px}
+.sheet__theme button{
+  display:inline-flex; align-items:center; gap:9px;
+  font-family:var(--mono); font-size:12px; letter-spacing:.13em; text-transform:uppercase;
+  padding:9px 16px; border:1px solid var(--line); border-radius:3px;
+  background:transparent; color:var(--moss); cursor:pointer;
+}
+.sheet__theme button svg{width:14px; height:14px; display:block; flex:0 0 auto}
+.sheet__theme button[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:var(--ground)}
+
 </style>
 <style>
 /* ============================================================
@@ -146,9 +171,13 @@
   --pad:clamp(20px,5vw,64px);
   --rail:190px;
   --ease:cubic-bezier(.22,.61,.36,1);
+
+  /* native UI — scrollbars, form controls — must follow the same switch */
+  color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
+    color-scheme:dark;
     --ground:#0B1310;
     --ground-2:#101A15;
     --raise:#152118;
@@ -168,6 +197,7 @@
   }
 }
 :root[data-theme="dark"]{
+  color-scheme:dark;
   --ground:#0B1310;
   --ground-2:#101A15;
   --raise:#152118;
@@ -352,17 +382,17 @@ p:last-child{margin-bottom:0}
   text-transform:uppercase; color:var(--moss); margin-top:4px;
 }
 
-.nav{display:none; margin-left:auto; align-items:center; gap:2px}
+.nav{display:none; margin-left:auto; align-items:center; gap:0}
 @media (min-width:1060px){.nav{display:flex}}
 .nav a,.nav button{
   font-family:var(--display); font-weight:600; font-variation-settings:"wdth" 108;
   text-transform:uppercase; font-size:12.5px; letter-spacing:.055em;
   background:none; border:0; cursor:pointer; text-decoration:none;
-  padding:9px 13px; border-radius:3px; position:relative; color:var(--ink);
+  padding:9px 10px; border-radius:3px; position:relative; color:var(--ink);
   transition:color .25s var(--ease);
 }
 .nav a::after{
-  content:""; position:absolute; left:13px; right:13px; bottom:4px; height:1px;
+  content:""; position:absolute; left:10px; right:10px; bottom:4px; height:1px;
   background:var(--puls); transform:scaleX(0); transform-origin:left;
   transition:transform .38s var(--ease);
 }
@@ -1094,28 +1124,31 @@ a.cell:hover .cell__go svg{transform:translateX(4px)}
 .pinfo dd{margin:0}
 
 /* ==========================================================================
-   one desktop threshold for the whole header. Six nav items, the language
-   switch, the live chip and the CTA only coexist above 1280px; below that the
-   burger menu carries all of it (the sheet has its own language switch).
+   one desktop threshold for the whole header. Six nav items, the colour-scheme
+   switch, the language switch, the labelled live chip and the CTA only fit
+   side by side above 1420px (measured: the CTA starts overflowing at ~1405);
+   below that the burger sheet carries all of it, including both switches.
    ========================================================================== */
-@media (max-width:1339px){
+@media (max-width:1419px){
   .nav{display:none}
   .langsw{display:none}
+  .themesw{display:none}
   .status{display:none}
   .burger{display:grid}
   .hdr__cta{margin-left:auto}
 }
-@media (min-width:1340px){
+@media (min-width:1420px){
   .nav{display:flex}
   .langsw{display:flex}
+  .themesw{display:flex}
   .status{display:inline-flex}
   .burger{display:none}
+  .status,.hdr__cta{margin-left:0}
 }
-/* the chip is the live "open now" dot; its label is carried by aria-label */
-.status .status__t{display:none}
-.status{padding-inline:10px}
+/* the chip is the live "open now" dot AND its label — an unlabelled dot next to
+   the language switch reads as an icon toggle, which is exactly what it is not */
 /* the header bar may run wider than the 1280px reading measure — it holds more items */
-@media (min-width:1340px){.hdr__in{max-width:1360px; gap:18px}}
+@media (min-width:1420px){.hdr__in{max-width:1500px; gap:14px; padding-inline:40px}}
 
 /* <picture> is a wrapper only; the layouts position the <img> itself */
 picture{display:contents}
@@ -1153,6 +1186,15 @@ picture{display:contents}
       <a href="#/karriere" data-nav><span class="lang-de">Karriere</span><span class="lang-en">Careers</span></a>
     </nav>
 
+    <div class="themesw" role="group" aria-label="Farbschema / Colour scheme">
+      <button type="button" data-theme-set="light" aria-pressed="false"
+              title="Helles Farbschema / Light appearance"
+              aria-label="Helles Farbschema / Light appearance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="3.1"/><path d="M8 1v1.6M8 13.4V15M15 8h-1.6M2.6 8H1M12.95 3.05l-1.13 1.13M4.18 11.82l-1.13 1.13M12.95 12.95l-1.13-1.13M4.18 4.18L3.05 3.05"/></svg></button>
+      <button type="button" data-theme-set="dark" aria-pressed="false"
+              title="Dunkles Farbschema / Dark appearance"
+              aria-label="Dunkles Farbschema / Dark appearance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M13.4 9.9A5.9 5.9 0 0 1 6.1 2.6a5.9 5.9 0 1 0 7.3 7.3Z"/></svg></button>
+    </div>
+
     <div class="langsw" role="group" aria-label="Sprache / Language">
       <button type="button" data-lang-set="de" aria-pressed="true">DE</button>
       <button type="button" data-lang-set="en" aria-pressed="false">EN</button>
@@ -1179,6 +1221,13 @@ picture{display:contents}
       <div class="sheet__lang" role="group">
         <button type="button" data-lang-set="de" aria-pressed="true">Deutsch</button>
         <button type="button" data-lang-set="en" aria-pressed="false">English</button>
+      </div>
+    </div>
+    <div class="sheet__grp">
+      <span class="label"><span class="lang-de">Farbschema</span><span class="lang-en">Appearance</span></span>
+      <div class="sheet__theme" role="group">
+        <button type="button" data-theme-set="light" aria-pressed="false"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="3.1"/><path d="M8 1v1.6M8 13.4V15M15 8h-1.6M2.6 8H1M12.95 3.05l-1.13 1.13M4.18 11.82l-1.13 1.13M12.95 12.95l-1.13-1.13M4.18 4.18L3.05 3.05"/></svg><span class="lang-de">Hell</span><span class="lang-en">Light</span></button>
+        <button type="button" data-theme-set="dark" aria-pressed="false"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M13.4 9.9A5.9 5.9 0 0 1 6.1 2.6a5.9 5.9 0 1 0 7.3 7.3Z"/></svg><span class="lang-de">Dunkel</span><span class="lang-en">Dark</span></button>
       </div>
     </div>
     <div class="sheet__grp">
@@ -3324,6 +3373,37 @@ picture{display:contents}
       location.hash = hashFor(r.key, b.dataset.langSet);
     });
   });
+
+  /* ---------------------------------------------------------- colour scheme
+     Session-less by the same argument as the language: the choice is written
+     to data-theme on <html> and nowhere else — no cookie, no localStorage —
+     so nothing is stored on the visitor's device and § 25 TTDSG never applies.
+     A reload returns them to their operating-system preference. */
+  var darkMQ = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+
+  function themeNow() {
+    var set = document.documentElement.getAttribute('data-theme');
+    if (set === 'light' || set === 'dark') return set;
+    return (darkMQ && darkMQ.matches) ? 'dark' : 'light';   /* still following the OS */
+  }
+
+  function markTheme() {
+    var now = themeNow();
+    $$('[data-theme-set]').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.themeSet === now));
+    });
+  }
+
+  $$('[data-theme-set]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.documentElement.setAttribute('data-theme', b.dataset.themeSet);
+      markTheme();
+    });
+  });
+
+  /* while no choice has been made, the OS flipping mid-session must move the marker */
+  if (darkMQ && darkMQ.addEventListener) darkMQ.addEventListener('change', markTheme);
+  markTheme();
 
   function markNav(route) {
     $$('a[data-nav]').forEach(function (a) {
