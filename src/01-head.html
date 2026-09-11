@@ -305,7 +305,10 @@ p:last-child{margin-bottom:0}
 .hr{height:1px; background:var(--line-soft); border:0; margin:0}
 
 /* two-column: mono rail + prose */
-.split{display:grid; gap:clamp(26px,3.4vw,52px)}
+.split{display:grid; grid-template-columns:minmax(0,1fr); gap:clamp(26px,3.4vw,52px)}
+/* minmax(0,1fr), not the implicit auto track: an auto track keeps min-width:auto,
+   so one over-wide child (the care pathway did exactly this) drags the whole
+   page wider than the viewport instead of being made to fit or scroll */
 @media (min-width:900px){
   .split{grid-template-columns:var(--rail) minmax(0,1fr); align-items:start}
   .split--wide{grid-template-columns:var(--rail) minmax(0,1fr)}
@@ -1120,13 +1123,50 @@ a.cell:hover .cell__go svg{transform:translateX(4px)}
 .mrow--tot b{font-size:19px; color:var(--puls)}
 
 /* care pathway */
-.path{display:flex; gap:0; overflow-x:auto; padding-bottom:6px; margin-bottom:18px}
-.pstep{flex:1 0 138px; text-align:left; background:transparent; border:0; cursor:pointer; padding:0 12px 0 0}
-.pstep__bar{display:block; height:4px; border-radius:2px; background:var(--line); margin-bottom:10px; transition:background .22s var(--ease)}
+/* ==========================================================================
+   The care pathway. Vertical by default — five steps stacked, their bars
+   joining into one continuous rule, which is the same treatment-chart spine
+   the rest of the page is built on and the only shape that fits a phone.
+
+   The horizontal row is opted into by CONTAINER width, not viewport width,
+   because this module's column is not monotonic in the viewport: at 1000px
+   the rail takes 190px and leaves it 674, at 860px the rail is gone and it
+   gets 772. No single media query can say "does the row fit". A browser
+   without container queries simply keeps the vertical list, which is fine.
+   ========================================================================== */
+.mod__body--path{container-type:inline-size}
+.path{margin-bottom:16px}
+.pstep{
+  display:grid; grid-template-columns:4px 1fr; column-gap:14px; width:100%;
+  text-align:left; background:transparent; border:0; cursor:pointer; padding:0;
+}
+.pstep__bar{
+  display:block;   /* a <span> stays inline once .pstep is no longer a grid */
+  grid-column:1; grid-row:1 / 3; align-self:stretch; width:4px;
+  background:var(--line); transition:background .22s var(--ease);
+}
+.pstep:first-child .pstep__bar{border-radius:2px 2px 0 0}
+.pstep:last-child .pstep__bar{border-radius:0 0 2px 2px}
 .pstep.is-on .pstep__bar,.pstep:hover .pstep__bar{background:var(--puls)}
-.pstep__n{display:block; font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; color:var(--moss); margin-bottom:3px}
-.pstep__t{display:block; font-size:14.5px; font-weight:600; color:var(--ink); line-height:1.25}
+.pstep__n{
+  grid-column:2; grid-row:1; display:block; padding-top:11px;
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; color:var(--moss);
+}
+.pstep__t{
+  grid-column:2; grid-row:2; display:block; padding-bottom:11px;
+  font-size:15px; font-weight:600; color:var(--ink); line-height:1.25;
+}
 .pstep.is-on .pstep__t{color:var(--puls)}
+
+/* 700px of CONTENT box (the query ignores .mod__body's padding): five steps at
+   their 138px minimum need 690, so this keeps the row everywhere it ever fitted */
+@container (min-width:700px){
+  .path{display:flex; gap:0; overflow-x:auto; padding-bottom:6px; margin-bottom:18px}
+  .pstep{display:block; flex:1 0 138px; padding:0 12px 0 0}
+  .pstep__bar{width:auto; height:4px; margin-bottom:10px; border-radius:2px}
+  .pstep:first-child .pstep__bar,.pstep:last-child .pstep__bar{border-radius:2px}
+  .pstep__n{padding-top:0; margin-bottom:3px}
+  .pstep__t{padding-bottom:0; font-size:14.5px}
 }
 .pinfo{background:var(--ground-2); border-radius:3px; padding:17px 19px}
 .pinfo h4{font-size:19px; margin:0 0 8px}
