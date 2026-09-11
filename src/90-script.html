@@ -379,6 +379,14 @@
 
     var DAYNAMES_EN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     var en = document.documentElement.getAttribute('data-lang') === 'en';
+
+    /* the dot in the Kontakt button is colour only — say the state out loud too */
+    var chipState = $('#statusChipState');
+    if (chipState) {
+      chipState.textContent = en
+        ? (open ? ' — currently open' : ' — currently closed')
+        : (open ? ' — jetzt geöffnet' : ' — zurzeit geschlossen');
+    }
     var line = (en ? DAYNAMES_EN[d] : DAYNAMES[d]) + ' · ' + (slots.length
       ? slots.map(function (s) { return hhmm(s[0]) + ' – ' + hhmm(s[1]); }).join(' · ')
       : (en ? 'closed' : 'geschlossen'));
